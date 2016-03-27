@@ -1,0 +1,78 @@
+$request$
+$InicioUsuario$ 
+$id$ 1 $id-$ 
+$password$ a1234b $password-$ 
+$InicioUsuario-$ 
+$request-$
+
+$request$
+$CrearUsuario$ 
+$id$ 1 $id-$ 
+$nombre$ "nombre del usuario" $nombre-$ 
+$apellido$ "apellido del usuario" $apellido-$ 
+$password$ a1234b $password-$ 
+$telefono$ 12345678 $telefono-$ 
+$email$ correocompi1com $email-$ 
+$direccion$ "direccion del usuario" $direccion-$ 
+$CrearUsuario-$ 
+$request-$
+
+$request$ 
+$tienda tipo= "crear"$ 
+$codigo$ 8 $codigo-$ 
+$propietario$ 5 $propietario-$ 
+$nombre$ "Librería Tatty" $nombre-$ 
+$direccion$ "Calle Real" $direccion-$ 
+$telefono$ 12345 $telefono-$ 
+$img$ "path de la imagen" $img-$ 
+$tienda-$ 
+$request-$
+
+$mate nombre="restas"$ 
+MenosCinco(v1)= {v1-5}; 
+RestaDeTres(v1,v2,v3)= {v1-v2-v3}; 
+Cons description="esta es la mejor tienda que podrías haber imaginado"; 
+Cons pan="pantalon"; 
+$mate-$
+
+$request$ 
+$tienda tipo="modificación", 
+codigo=100, 
+Propietario=2, 
+nombre= "Librería Tatiana", 
+direccion="Guatemala", 
+telefono=12345678 -$ //notar que toda es la misma línea 
+//puede venir n cantidad de veces 
+$tienda codigo=100, propietario=2, tipo="modificación", direccion="Puerta Parada" -$ 
+$tienda codigo=100, propietario=2, telefono=2222, tipo="modificación" -$ 
+$request-$
+
+$request$ 
+$producto tipo="crear"$ 
+//solo las etiquetas que aparezcan se van a modificar 
+$codigo$ 2 $codigo-$ 
+$nombre$ "Tasa" $nombre-$ 
+$cantidad$ {8*33+1} $cantidad-$
+//Es lo mismo que $cantidad$ 265 $cantidad-$ ntidad$ 265 $cantidad-$ 
+$marca$ "Montoya" $marca-$ 
+$color$ "blanco" $color-$ 
+$tamaño$ {Pt(Rq((9+10)+10))} $tamaño-$ 
+$img$ "path de la imagen" $img-$ 
+$sucursal$ 3 $sucursal-$ 
+$producto-$ 
+$request-$
+
+$request$ 
+$producto tipo="modificar" codigo=10 sucursal=12 nombre="Plato" cantidad= {8*8} -$ 
+//Pueden venir muchas modificaciones dentro del mismo request e incluso eliminaciones 
+$producto tipo="modificar" codigo=10 sucursal=12 nombre="Plato" cantidad= {8*8-1} -$ 
+$request-$
+
+$request$ 
+$tienda id=10$ $producto tipo="modificar" codigo=10 nombre="Plato" cantidad= {8*8} -$ 
+//Pueden venir muchas modificaciones dentro del mismo request e incluso eliminaciones
+$producto tipo="modificar" codigo=10 nombre="Plato" cantidad= {8*8 -1} -$ 
+$tienda-$ 
+$request-$
+
+

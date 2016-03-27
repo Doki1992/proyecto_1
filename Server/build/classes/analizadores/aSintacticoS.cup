@@ -1,0 +1,204 @@
+    package analizadores;
+    import java.io.*;
+    import java_cup.runtime.*;
+    import java.util.LinkedList;
+    import java.util.ArrayList;
+    import javax.swing.ImageIcon;
+    import java.util.Hashtable;
+
+    parser code
+    {:
+    // METODOS Y VARIABLES GLOBALES DEL PARSER, PUEDEN SER PUBLICAS O PRIVADAS
+     public String salida="";
+    public ArrayList<String> getDatosFigura(){
+    return action_obj.gman;
+    }
+    public int tam1, tam2;
+    public LinkedList tab = new LinkedList();
+  //  static LinkedList<Element> gmansimb = new LinkedList();
+    public boolean err=false;
+    public String resultado="";
+
+    public void syntax_error(Symbol s){
+    /**Metodo al que se llama automaticamente ante algun error sintactico.*/
+            err=true;
+            System.out.println("Error Sintactico en la Linea " + (s.right+1) +" Columna "+s.left+ ". Identificador " +s.value + " no reconocido." );
+       tab.add(s.right+1);
+       tab.add(s.left);
+       tab.add(s.value);
+        }
+
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+    /**Metodo al que se llama en el momento en que ya no es posible una recuperacion de errores.*/
+            err=true;
+            System.out.println("Error Sintactico en la Linea " + (s.right+1)+ "Columna "+s.left+". Identificador " + s.value + " no reconocido.");
+    }
+
+
+    :}
+    action code
+    {:
+    ArrayList<String> gman = new ArrayList();
+    
+
+    //METODOS Y VARIABLES QUE SOLO PUEDEN SER ACCEDIDAS DENTRO DEL PARSER
+    int exponente(int exp){
+    int resultado= 1;
+    for(int i=1; i<exp; i++){
+    resultado = resultado *2;
+    }
+    return resultado;
+    }
+    :}
+
+    terminal String MAS, MENOS, POR, DIV, COMA, MNR, MYR, XOR, CADS, COMILLA, FECHA, PUNTOC, PUNTO, PUNTOS, BAJO, PARA, PARC, LLAVEA, LLAVEC; 
+    terminal String FECHAC, IGUAL, D, R, IU, IDE, P, T, CU, NOM, APE, TEL, EM, DIR;
+    terminal String TIENDA, TIPO, COD, PROP, IMG, PROP2, TIPO2, CANT, MARCA, COLOR, TAM, SUCURSAL, PROD, MATE, CONS, EXTRAER, DE, QUERY;
+    terminal String DONDE, OR, AND, NOT, GET, MD, PT, RQ, ABREC, CIERRAC;
+    terminal String num, id;
+    non terminal String programa, in, expresion, termino, factor, logica, rel, cuerpo, inuser, list1, list2, list3, list4, list5, list6, l1, l2, l3, l4, l5,l6;
+    non terminal String c, llamada, llam, paramet, declara, dec, pro, exp;
+    precedence left MAS, MENOS;
+    precedence left POR, DIV;
+    precedence left MD;
+
+    
+//INICIO DEL PARSER
+    start with programa;
+
+//NIVEL 1
+    programa::=  programa pro | pro;
+    pro::=     D MATE NOM IGUAL logica D 
+                declara
+               D MATE MD
+
+                |D R D 
+                    cuerpo 
+                 D R MD 
+                 
+                |D QUERY D 
+                     exp
+                 D QUERY MD ;
+                
+    declara::= declara dec | dec;
+    dec::= CONS id IGUAL logica PUNTOC 
+                | id PARA paramet PARC IGUAL LLAVEA logica LLAVEC PUNTOC;
+     
+    exp::= EXTRAER DE logica PUNTOC | EXTRAER DE logica DONDE logica PUNTOC;            
+                
+    cuerpo::= cuerpo c | c;
+    c::= D IU D 
+                D IDE D llamada D IDE MD 
+                D P D llamada D P MD 
+              D IU MD //inicio de usuario
+
+              |D CU D 
+                list1
+               D CU MD  //crear usuario
+              
+              |D TIENDA TIPO IGUAL CADS D
+                list2
+               D TIENDA MD //registro de tienda
+              
+              | D TIENDA list3 MD
+                
+              | D PROD TIPO IGUAL CADS D 
+                list4 
+                D PROD MD
+
+              | D PROD list5 MD
+              
+              | D TIENDA IDE IGUAL llamada D
+                list6
+               D TIENDA MD  
+              
+              | D GET TIPO IGUAL llamada PROP IGUAL llamada MD; 
+
+//NIVEL 2 LISTAS DENTRO DE NIVEL 1
+
+    list1::= list1 l1 | l1;
+    l1::= D IDE D llamada D IDE MD 
+                |D NOM D llamada D NOM MD 
+                |D APE D llamada D APE MD 
+                |D P D llamada D P MD 
+                |D TEL D llamada D TEL MD 
+                |D EM D llamada D EM MD 
+                |D DIR D llamada D DIR MD;
+    
+    list2::= list2 l2 | l2;
+    l2::= D COD D llamada D COD MD
+                |D PROP D llamada D PROP MD
+                |D NOM D llamada D NOM MD
+                |D DIR D llamada D DIR MD
+                |D TEL D llamada D TEL MD
+                |D IMG D llamada D IMG MD;
+
+   list3::= list3 COMA l3 | l3;
+    l3::= TIPO IGUAL llamada
+            | COD IGUAL llamada
+            | PROP IGUAL llamada
+            | NOM IGUAL llamada
+            | DIR IGUAL llamada
+            | TEL IGUAL llamada;
+
+   list4::= list4 l4 | l4;
+    l4::= D COD D llamada D COD MD
+            | D NOM D llamada D NOM MD
+            | D CANT D llamada D CANT MD
+            | D MARCA D llamada D MARCA MD
+            | D COLOR D llamada D COLOR MD
+            | D TAM D llamada D TAM MD
+            | D IMG D llamada D IMG MD
+            | D SUCURSAL D llamada D SUCURSAL MD; 
+
+
+   list5::= list5 l5 | l5;
+    l5::= TIPO IGUAL llamada
+            | COD IGUAL llamada
+            | SUCURSAL IGUAL llamada
+            | NOM IGUAL llamada
+            | CANT IGUAL llamada;
+
+
+    list6::= list6 l6 | l6;
+    l6::= D PROD list5 MD;
+
+//NIVEL 3 EXPRESIONES LOGICAS
+
+    logica::= logica OR rel
+            | logica XOR rel
+            | logica AND rel
+            | rel;
+    rel::=  NOT in
+            |rel MNR in
+            | rel MYR in
+            | in;
+ 
+llamada::= ABREC logica COMA llam CIERRAC
+            | logica;
+llam::= id PARA paramet PARC
+            | logica;
+paramet::= paramet COMA logica | logica;
+
+//NIVEL 4 -  EXPRESIONES Y FACTORES  
+ 
+    in::= expresion;
+
+    expresion::= termino MAS expresion
+    | termino MENOS expresion
+    | termino;
+
+    termino::= factor POR termino
+    |factor DIV termino
+    |factor;
+
+    factor::= PARA logica PARC
+    | PT PARA logica PARC
+    | RQ PARA logica PARC
+    | LLAVEA logica LLAVEC
+    | MENOS expresion
+    | num
+    | id
+    | CADS;
+
+

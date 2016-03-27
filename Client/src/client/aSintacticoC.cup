@@ -1,0 +1,101 @@
+    package client;
+    import java.io.*;
+    import java_cup.runtime.*;
+    import java.util.LinkedList;
+    import java.util.ArrayList;
+    import javax.swing.ImageIcon;
+    import java.util.Hashtable;
+
+    parser code
+    {:
+    // METODOS Y VARIABLES GLOBALES DEL PARSER, PUEDEN SER PUBLICAS O PRIVADAS
+     public String salida="";
+    public ArrayList<String> getDatosFigura(){
+    return action_obj.gman;
+    }
+    public int tam1, tam2;
+    public LinkedList tab = new LinkedList();
+  //  static LinkedList<Element> gmansimb = new LinkedList();
+    public boolean err=false;
+    public String resultado="";
+
+    public void syntax_error(Symbol s){
+    /**Metodo al que se llama automaticamente ante algun error sintactico.*/
+            err=true;
+            System.out.println("Error Sintactico en la Linea " + (s.right+1) +" Columna "+s.left+ ". Identificador " +s.value + " no reconocido." );
+       tab.add(s.right+1);
+       tab.add(s.left);
+       tab.add(s.value);
+        }
+
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+    /**Metodo al que se llama en el momento en que ya no es posible una recuperacion de errores.*/
+            err=true;
+            System.out.println("Error Sintactico en la Linea " + (s.right+1)+ "Columna "+s.left+". Identificador " + s.value + " no reconocido.");
+    }
+
+
+    :}
+    action code
+    {:
+    ArrayList<String> gman = new ArrayList();
+    
+
+    //METODOS Y VARIABLES QUE SOLO PUEDEN SER ACCEDIDAS DENTRO DEL PARSER
+    int exponente(int exp){
+    int resultado= 1;
+    for(int i=1; i<exp; i++){
+    resultado = resultado *2;
+    }
+    return resultado;
+    }
+    :}
+
+    terminal String MAS, MENOS, POR, DIV , CACHAR,  COMA, CADSPACE,  COMILLA, PUNTOC, PUNTO, PUNTOS, BAJO, PARA, PARC, LLAVEA, LLAVEC, MNR, MYR, IGUAL, MD, D; 
+    terminal String POTENC, MASM, MENOSM, MYREQ, MNREQ, IGUALI, NOIGUAL, REPLY, USER, IDE, ACCESS, TRUE, FALSE, FAIL, REC, MOD;
+    terminal String OR, XOR, AND, NOT, ABREC, CIERRAC, ER, DES, LIST, COD, PROP, NOM, DIR, TEL, CANT, MARC, COLOR, TAM, TIE, REG;
+    terminal String DOSP, SUP, PROD, SUC;
+    terminal String num, id;
+    non terminal String programa, pro;
+    non terminal String in, expresion, termino, factor;
+    non terminal String logica, rel, sinosi, hacer, cuerpocaso, cpc;
+
+
+    precedence left MAS, MENOS;
+    precedence left POR, DIV;
+
+    start with programa;
+     programa::=  programa pro | pro;
+    pro::=     D REPLY D   
+                D USER D
+                    D IDE D
+                        in
+                    D IDE MD
+                    D ACCESS D
+                        in 
+                    D ACCESS MD
+                D USER MD
+               D REPLY MD;
+    
+  
+    
+in::= expresion;
+
+    expresion::= termino MAS expresion
+    | termino MENOS expresion
+    | termino;
+
+    termino::= factor POR termino
+    |factor DIV termino
+    |factor;
+
+    factor::= PARA in PARC
+    | LLAVEA in LLAVEC
+    | MENOS expresion
+    | num
+    | id
+    | CADSPACE;
+   
+
+
+
