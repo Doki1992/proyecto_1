@@ -1,5 +1,6 @@
     package analizadores;
     import java.io.*;
+    import Arbol.*;
     import java_cup.runtime.*;
     import java.util.LinkedList;
     import java.util.ArrayList;
@@ -53,11 +54,29 @@
 
     terminal String MAS, MENOS, POR, DIV, COMA, MNR, MYR, XOR, CADS, COMILLA, FECHA, PUNTOC, PUNTO, PUNTOS, BAJO, PARA, PARC, LLAVEA, LLAVEC; 
     terminal String FECHAC, IGUAL, D, R, IU, IDE, P, T, CU, NOM, APE, TEL, EM, DIR;
-    terminal String TIENDA, TIPO, COD, PROP, IMG, PROP2, TIPO2, CANT, MARCA, COLOR, TAM, SUCURSAL, PROD, MATE, CONS, EXTRAER, DE, QUERY;
+    terminal String TIENDA, TIPO, COD, PROP, IMG, PROP2, TIPO2,  MARCA, COLOR, TAM, SUCURSAL, PROD, MATE, CONS, EXTRAER, DE, QUERY;
     terminal String DONDE, OR, AND, NOT, GET, MD, PT, RQ, ABREC, CIERRAC;
-    terminal String num, id;
-    non terminal String programa, in, expresion, termino, factor, logica, rel, cuerpo, inuser, list1, list2, list3, list4, list5, list6, l1, l2, l3, l4, l5,l6;
-    non terminal String c, llamada, llam, paramet, declara, dec, pro, exp;
+    terminal Numero num;
+    terminal Id id;
+    terminal Cadena CANT;
+    non terminal Produccion_progrma programa; 
+    non terminal Produccion_expresion in, expresion;
+    non terminal Produccion_termino termino; 
+    non terminal Produccion_factor factor; 
+    non terminal Produccion_logica logica; 
+    non terminal Produccion_rel rel; 
+    non terminal Produccion_cuerpo cuerpo; 
+    non terminal LinkedList<Objeto> list1, list2, list3, list4, list5, list6;
+    non terminal Objeto l1, l2, l3, l4, l5,l6;
+    non terminal Produccion_c c;
+    non terminal Produccion_llamada llamada; 
+    non terminal Produccion_llam llam; 
+    non terminal Produccion_paramet paramet;
+    non terminal Produccion_declara declara; 
+    non terminal Produccion_dec dec; 
+    non terminal Produccion_pro pro;
+    non terminal Produccion_exp exp;
+
     precedence left MAS, MENOS;
     precedence left POR, DIV;
     precedence left MD;
@@ -67,138 +86,141 @@
     start with programa;
 
 //NIVEL 1
-    programa::=  programa pro | pro;
-    pro::=     D MATE NOM IGUAL logica D 
-                declara
-               D MATE MD
+    programa::=  programa:a pro:b {:RESULT = new List_programa(b,a);:}| pro:a {:RESULT = new Unit_programa(a);:};
+    pro::=     D MATE NOM IGUAL logica:a D 
+                declara:b
+               D MATE MD{:RESULT = new Mate(b,a);:}
 
                 |D R D 
-                    cuerpo 
+                    cuerpo:a
                  D R MD 
-                 
+                 {:RESULT = new Cuerpo(a);:}
                 |D QUERY D 
-                     exp
-                 D QUERY MD ;
+                     exp:a
+                 D QUERY MD {:RESULT = new Query(a);:};
                 
-    declara::= declara dec | dec;
-    dec::= CONS id IGUAL logica PUNTOC 
-                | id PARA paramet PARC IGUAL LLAVEA logica LLAVEC PUNTOC;
+    declara::= declara:a dec:b {:RESULT = new List_declara(a,b);:}| dec:a{:RESULT = new Unit_declara(a);:};
+    dec::= CONS id:a IGUAL logica:b PUNTOC {:RESULT = new Declara_const(a,b);:}
+                | id:a PARA paramet:b PARC IGUAL LLAVEA logica:c LLAVEC PUNTOC{:RESULT = new Declara_funcion(a,c,b);:};
      
-    exp::= EXTRAER DE logica PUNTOC | EXTRAER DE logica DONDE logica PUNTOC;            
+    exp::= EXTRAER DE logica:a PUNTOC {:RESULT = new Exp_query1(a);:}| EXTRAER DE logica:a DONDE logica:b PUNTOC{:RESULT = new Exp_query2(a,b);:};            
                 
-    cuerpo::= cuerpo c | c;
+    cuerpo::= cuerpo:a c:b {:RESULT = new List_cuerpo(a,b);:}| c:b{:RESULT = new Unit_cuerpo(b);:};
     c::= D IU D 
-                D IDE D llamada D IDE MD 
-                D P D llamada D P MD 
-              D IU MD //inicio de usuario
+                D IDE D llamada:a D IDE MD 
+                D P D llamada:b D P MD 
+              D IU MD {:RESULT = new Inicio_usuario(a,b);:} //inicio de usuario
 
               |D CU D 
-                list1
-               D CU MD  //crear usuario
+                list1:a
+               D CU MD {:RESULT = new Crea_usuario(a);:} //crear usuario
               
               |D TIENDA TIPO IGUAL CADS D
-                list2
-               D TIENDA MD //registro de tienda
+                list2:a
+               D TIENDA MD {:RESULT = new Registro_tienda(a);:}//registro de tienda
               
-              | D TIENDA list3 MD
+              | D TIENDA list3:a MD {:RESULT = new Modifica_tienda(a);:}//modifica tienda
                 
-              | D PROD TIPO IGUAL CADS D 
-                list4 
-                D PROD MD
+              | D PROD TIPO IGUAL CADS D //elimina tienda
+                list4:a
+                D PROD MD {:RESULT = new Elimina_tienda(a);:}
 
-              | D PROD list5 MD
+              | D PROD list5:a MD {:RESULT = new Crea_producto(a);:}//crea producto
               
-              | D TIENDA IDE IGUAL llamada D
-                list6
-               D TIENDA MD  
+              | D TIENDA IDE IGUAL llamada D //operaciones sobre productos
+                list6:a
+               D TIENDA MD  {:RESULT = new Operaciones_producto(a);:}
               
-              | D GET TIPO IGUAL llamada PROP IGUAL llamada MD; 
+              | D GET TIPO IGUAL llamada:a PROP IGUAL llamada:b MD {:RESULT = new Get_tiendas(a,b);:}; 
 
 //NIVEL 2 LISTAS DENTRO DE NIVEL 1
 
-    list1::= list1 l1 | l1;
-    l1::= D IDE D llamada D IDE MD 
-                |D NOM D llamada D NOM MD 
-                |D APE D llamada D APE MD 
-                |D P D llamada D P MD 
-                |D TEL D llamada D TEL MD 
-                |D EM D llamada D EM MD 
-                |D DIR D llamada D DIR MD;
+    list1::= list1:a l1:b {:RESULT = a;a.add(b);:} | l1:a{:RESULT = new LinkedList<Objeto>();
+RESULT.add(a);:};
+    l1::= D IDE:a D llamada:b D IDE MD {:RESULT = new Objeto(a,b);:}
+                |D NOM:a D llamada:b D NOM MD {:RESULT = new Objeto(a,b);:}
+                |D APE:a D llamada:b D APE MD {:RESULT = new Objeto(a,b);:}
+                |D P:a D llamada:b D P MD {:RESULT = new Objeto(a,b);:}
+                |D TEL:a D llamada:b D TEL MD {:RESULT = new Objeto(a,b);:} 
+                |D EM:a D llamada:b D EM MD {:RESULT = new Objeto(a,b);:}
+                |D DIR:a D llamada:b D DIR MD {:RESULT = new Objeto(a,b);:}; 
     
-    list2::= list2 l2 | l2;
-    l2::= D COD D llamada D COD MD
-                |D PROP D llamada D PROP MD
-                |D NOM D llamada D NOM MD
-                |D DIR D llamada D DIR MD
-                |D TEL D llamada D TEL MD
-                |D IMG D llamada D IMG MD;
+    list2::= list2:a l2:b {:RESULT = a;a.add(b);:}| l2:a{:RESULT = new LinkedList<Objeto>();RESULT.add(a);:};
+    l2::= D COD:a D llamada:b D COD MD {:RESULT = new Objeto(a,b);:}
+                |D PROP:a D llamada:b D PROP MD {:RESULT = new Objeto(a,b);:}
+                |D NOM:a D llamada:b D NOM MD {:RESULT = new Objeto(a,b);:}
+                |D DIR:a D llamada:b D DIR MD {:RESULT = new Objeto(a,b);:}
+                |D TEL:a D llamada:b D TEL MD {:RESULT = new Objeto(a,b);:}
+                |D IMG:a D llamada:b D IMG MD {:RESULT = new Objeto(a,b);:};
 
-   list3::= list3 COMA l3 | l3;
-    l3::= TIPO IGUAL llamada
-            | COD IGUAL llamada
-            | PROP IGUAL llamada
-            | NOM IGUAL llamada
-            | DIR IGUAL llamada
-            | TEL IGUAL llamada;
+//modifica tienda
+   list3::= list3:a COMA l3:b {:RESULT = a;a.add(b);:}| l3:a {:RESULT = new LinkedList<Objeto>();RESULT.add(a);:};
+    l3::= TIPO:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}
+            | COD:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}
+            | PROP:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}
+            | NOM:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}
+            | DIR:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}
+            | TEL:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}; 
 
-   list4::= list4 l4 | l4;
-    l4::= D COD D llamada D COD MD
-            | D NOM D llamada D NOM MD
-            | D CANT D llamada D CANT MD
-            | D MARCA D llamada D MARCA MD
-            | D COLOR D llamada D COLOR MD
-            | D TAM D llamada D TAM MD
-            | D IMG D llamada D IMG MD
-            | D SUCURSAL D llamada D SUCURSAL MD; 
-
-
-   list5::= list5 l5 | l5;
-    l5::= TIPO IGUAL llamada
-            | COD IGUAL llamada
-            | SUCURSAL IGUAL llamada
-            | NOM IGUAL llamada
-            | CANT IGUAL llamada;
+   list4::= list4:a l4:b {:RESULT = a;a.add(b);:}| l4:a{:RESULT = new LinkedList<Objeto>();RESULT.add(a);:}; //elimina tienda 
+    l4::= D COD:a D llamada:b D COD MD {:RESULT = new Objeto(a,b);:}
+            | D NOM:a D llamada:b D NOM MD {:RESULT = new Objeto(a,b);:}
+            | D CANT:a D llamada:b D CANT MD {:RESULT = new Objeto(a,b);:}
+            | D MARCA:a D llamada:b D MARCA MD {:RESULT = new Objeto(a,b);:}
+            | D COLOR:a D llamada:b D COLOR MD {:RESULT = new Objeto(a,b);:}
+            | D TAM:a D llamada:b D TAM MD {:RESULT = new Objeto(a,b);:}
+            | D IMG:a D llamada:b D IMG MD {:RESULT = new Objeto(a,b);:}
+            | D SUCURSAL:a D llamada:b D SUCURSAL MD {:RESULT = new Objeto(a,b);:}; 
 
 
-    list6::= list6 l6 | l6;
-    l6::= D PROD list5 MD;
+   list5::= list5:a l5:b {:RESULT = a;a.add(b);:}| l5:a {:RESULT = new LinkedList<Objeto>();RESULT.add(a);:}; //crea producto
+    l5::= TIPO:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}
+            | COD:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}
+            | SUCURSAL:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}
+            | NOM:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}
+            | CANT:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:};
+
+
+    list6::= list6:a l6:b {:RESULT = a;a.add(b);:}| l6:a {:RESULT = new LinkedList<Objeto>();RESULT.add(a);:}; //acciones sobre productos
+    l6::= D PROD:a list5:b MD {:RESULT = new Objeto(a,null,b); :};
 
 //NIVEL 3 EXPRESIONES LOGICAS
 
-    logica::= logica OR rel
-            | logica XOR rel
-            | logica AND rel
-            | rel;
-    rel::=  NOT in
-            |rel MNR in
-            | rel MYR in
-            | in;
+    logica::= logica:a OR rel:b {:RESULT = new L_or(a,b);:}
+            | logica:a XOR rel:b {:RESULT = new L_xor(a,b);:}
+            | logica:a AND rel:b {:RESULT = new L_and(a,b);:}
+            | rel:a {:RESULT =new L_rel(a);:};
+
+    rel::=  NOT in:a {:RESULT = new Not_rel(a);:}
+            |rel:a MNR in:b {:RESULT = new Menor_rel(a,b);:}
+            | rel:a MYR in:b {:RESULT = new Mayor_rel(a,b);:}
+            | in:b {:RESULT = new In_rel(b);:};
  
-llamada::= ABREC logica COMA llam CIERRAC
-            | logica;
-llam::= id PARA paramet PARC
-            | logica;
-paramet::= paramet COMA logica | logica;
+llamada::= ABREC logica:a COMA llam:b CIERRAC {:RESULT = new Llamada_funcion(a,b);:}
+            | logica:a {:RESULT = new Llamada_logica(a);:};
+llam::= id:a PARA paramet:b PARC {:RESULT = new Llam_fuc(a,b);:}
+            | logica:a {:RESULT = new Llam_cons(a);:};
+paramet::= paramet:a COMA logica:b {:RESULT = new Paramet_dos(a,b);:} | logica:a {:RESULT = new Paramet_uno(a);:};
 
 //NIVEL 4 -  EXPRESIONES Y FACTORES  
  
-    in::= expresion;
+    in::= expresion:a {:RESULT = a;:};
 
-    expresion::= termino MAS expresion
-    | termino MENOS expresion
-    | termino;
+    expresion::= termino:a MAS expresion:b {:RESULT = new Expresion_mas(b,a);:}
+    | termino:a MENOS expresion:b {:RESULT = new Expresion_menos(b,a);:}
+    | termino:a {:RESULT = new Expresion_termino(a);:};
 
-    termino::= factor POR termino
-    |factor DIV termino
-    |factor;
+    termino::= factor:a POR termino:b{:RESULT = new Termino_por(b,a);:}
+    |factor:a DIV termino:b{:RESULT = new Termino_division(b,a);:}
+    |factor:a {:RESULT = new Termino_factor(a);:};
 
-    factor::= PARA logica PARC
-    | PT PARA logica PARC
-    | RQ PARA logica PARC
-    | LLAVEA logica LLAVEC
-    | MENOS expresion
-    | num
-    | id
-    | CADS;
+    factor::= PARA logica:a PARC {:RESULT = new Parentesis_logica(a);:}
+    | PT PARA logica:a PARC {:RESULT = new Factor_potencia(a);:}
+    | RQ PARA logica:a PARC {:RESULT = new Factor_exponente(a);:}
+    | LLAVEA logica:a LLAVEC {:RESULT = new Logica_llave(a);:}
+    | MENOS expresion:a {:RESULT = new Factor_expresion(a);:}
+    | num:a {:RESULT = new Factor_numero(a);:}
+    | id:a {:RESULT = new Factor_id(a);:}
+    | CADS:a {:RESULT = new Factor_cadena(a);:};
 
 
