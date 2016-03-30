@@ -12,10 +12,10 @@ import java.util.LinkedList;
  *
  * @author twa
  */
-public class Modifica_tienda implements Produccion_c{
+public class Modifica_Elimina_tienda implements Produccion_c{
     public LinkedList<Objeto> list3;
 
-    public Modifica_tienda(LinkedList<Objeto> list3) {
+    public Modifica_Elimina_tienda(LinkedList<Objeto> list3) {
         this.list3 = list3;
     }
     

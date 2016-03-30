@@ -68,8 +68,8 @@ public Nodo getRaiz(){return raiz;}
     non terminal Produccion_logica logica; 
     non terminal Produccion_rel rel; 
     non terminal Produccion_cuerpo cuerpo; 
-    non terminal LinkedList<Objeto> list1, list2, list3, list4, list5, list6;
-    non terminal Objeto l1, l2, l3, l4, l5,l6;
+    non terminal LinkedList<Objeto> list1, list2, list3, list4, list5, list6, listDeletT;
+    non terminal Objeto l1, l2, l3, l4, l5,l6,lDT;
     non terminal Produccion_c c;
     non terminal Produccion_llamada llamada; 
     non terminal Produccion_llam llam; 
@@ -80,10 +80,10 @@ public Nodo getRaiz(){return raiz;}
     non terminal Produccion_exp exp;
     non terminal Nodo raiz;
 
-    precedence left MAS, MENOS;
+    precedence left MAS, MD;
     precedence left POR, DIV;
     precedence left MD;
-
+    precedence right  MENOS;
     
 //INICIO DEL PARSER
     start with raiz;
@@ -123,13 +123,13 @@ public Nodo getRaiz(){return raiz;}
                 list2:a
                D TIENDA MD {:RESULT = new Registro_tienda(a);:}//registro de tienda
               
-              | D TIENDA list3:a MD {:RESULT = new Modifica_tienda(a);:}//modifica tienda
+              | D TIENDA list3:a MD {:RESULT = new Modifica_Elimina_tienda(a);:}//modifica elimina tienda
                 
-              | D PROD TIPO IGUAL CADS D //elimina tienda
+              | D PROD TIPO IGUAL CADS D //producto
                 list4:a
-                D PROD MD {:RESULT = new Elimina_tienda(a);:}
+                D PROD MD {:RESULT = new Crea_producto(a);:}
 
-              | D PROD list5:a MD {:RESULT = new Crea_producto(a);:}//crea producto
+              | D PROD list5:a MD {:RESULT =  new Operaciones_producto(a);:}//modifica elimina producto
               
               | D TIENDA IDE IGUAL llamada D //operaciones sobre productos
                 list6:a
@@ -166,7 +166,7 @@ RESULT.add(a);:};
             | DIR:a IGUAL CADS:b {:RESULT = new Objeto(a,b);:}
             | TEL:a IGUAL num:b {:RESULT = new Objeto(a,b);:}; 
 
-   list4::= list4:a l4:b {:RESULT = a;a.add(b);:}| l4:a{:RESULT = new LinkedList<Objeto>();RESULT.add(a);:}; //elimina tienda 
+   list4::= list4:a l4:b {:RESULT = a;a.add(b);:}| l4:a{:RESULT = new LinkedList<Objeto>();RESULT.add(a);:}; //crea producto
     l4::= D COD:a D llamada:b D COD MD {:RESULT = new Objeto(a,b);:}
             | D NOM:a D llamada:b D NOM MD {:RESULT = new Objeto(a,b);:}
             | D CANT:a D llamada:b D CANT MD {:RESULT = new Objeto(a,b);:}
@@ -187,6 +187,7 @@ RESULT.add(a);:};
 
     list6::= list6:a l6:b {:RESULT = a;a.add(b);:}| l6:a {:RESULT = new LinkedList<Objeto>();RESULT.add(a);:}; //acciones sobre productos
     l6::= D PROD:a list5:b MD {:RESULT = new Objeto(a,null,b); :};
+
 
 //NIVEL 3 EXPRESIONES LOGICAS
 

@@ -69,7 +69,10 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(Elimina_tienda Et) {
-        return Et.list4;
+        crea_tienda = new Crea_datos_tienda(Et.list4);
+        crea_tienda.elimina_Tienda(t_usuarios);
+        Log.add(crea_tienda.getMensaje());
+        return null;
     }
 
     @Override
@@ -262,9 +265,10 @@ public class Traductor implements Visitor{
     }
 
     @Override
-    public Object vistit(Modifica_tienda modificatienda) {
+    public Object vistit(Modifica_Elimina_tienda modificatienda) {
         crea_tienda= new Crea_datos_tienda(modificatienda.list3);
         crea_tienda.modificc_Tienda(this.t_usuarios);
+        this.Log.add(crea_tienda.getMensaje());
       return null;
     }
 

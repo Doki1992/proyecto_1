@@ -38,12 +38,26 @@ public class Crea_datos_tienda {
         return  t;
     }
     
+    public void elimina_Tienda(Tabla_usuario usuarios){
+        set_datos();
+        if(usuarios.containsKey(propietario)){
+            if(usuarios.getUsuario(propietario).tiendas.containsKey(codigo)){
+                usuarios.getUsuario(propietario).tiendas.remove(usuarios.getUsuario(propietario).tiendas.getTienda(codigo));
+            mensaje=new String("La tienda con id "+codigo+" ha sido eliminada");
+            }else{
+            mensaje = new String("La Tienda con id " +codigo+" no existe");
+            }
+        }else{
+            mensaje = new String("El usuario con id " +propietario+" no existe");
+        }
+        reset_datos();
+    }
+    
     public void modificc_Tienda(Tabla_usuario usuarios){
         set_datos();
         if(usuarios.containsKey(this.propietario)){
             if(usuarios.getUsuario(propietario).tiendas.containsKey(codigo)){
-                mensaje = "se han modificado los datos de la tienda con codigo "+codigo;
-                Tienda u = usuarios.getUsuario(propietario).tiendas.getTienda(codigo);
+                mensaje = new String("se han modificado los datos de la tienda con codigo "+codigo);
                 if(!codigo.equals("null"))
                 usuarios.getUsuario(propietario).tiendas.getTienda(codigo).setCodigo(codigo);
                 if(!nombre.equals("null"))
@@ -57,10 +71,10 @@ public class Crea_datos_tienda {
                 if(!telefono.equals("null"))
                 usuarios.getUsuario(propietario).tiendas.getTienda(codigo).setTelefono(telefono);
             }else{
-                mensaje="la tienda con codigo "+codigo+" no existe";
+                mensaje=new String("la tienda con codigo "+codigo+" no existe");
             }
         }else{
-            mensaje="el usuario con id "+this.propietario+" no existe";
+            mensaje=new String("el usuario con id "+this.propietario+" no existe");
         }
         reset_datos();
     }

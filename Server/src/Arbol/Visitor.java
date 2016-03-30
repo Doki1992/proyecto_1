@@ -47,7 +47,7 @@ public interface Visitor {
     public Object vistit(Mate mate);
     public Object vistit(Mayor_rel mayorel);
     public Object vistit(Menor_rel menorel);
-    public Object vistit(Modifica_tienda modificatienda);
+    public Object vistit(Modifica_Elimina_tienda modificatienda);
     public Object vistit(Not_rel nrel);
     public Object vistit(Numero numero);
     public Object vistit(Operaciones_producto opeproducto);
