@@ -10,7 +10,7 @@ package Arbol;
  *
  * @author twa
  */
-public class Cadena implements Terminal{
+public class Cadena implements Produccion_factor{
     public String cadena;
 
     public Cadena(String cadena) {
@@ -20,7 +20,7 @@ public class Cadena implements Terminal{
 
     @Override
     public Object Acept(Visitor v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      return  v.vistit(this);
     }
     
 }

@@ -9,6 +9,8 @@
 
     parser code
     {:
+     Nodo raiz;
+public Nodo getRaiz(){return raiz;}
     // METODOS Y VARIABLES GLOBALES DEL PARSER, PUEDEN SER PUBLICAS O PRIVADAS
      public String salida="";
     public ArrayList<String> getDatosFigura(){
@@ -52,13 +54,13 @@
     }
     :}
 
-    terminal String MAS, MENOS, POR, DIV, COMA, MNR, MYR, XOR, CADS, COMILLA, FECHA, PUNTOC, PUNTO, PUNTOS, BAJO, PARA, PARC, LLAVEA, LLAVEC; 
+    terminal String MAS, MENOS, POR, DIV, COMA, MNR, MYR, XOR, COMILLA, FECHA, PUNTOC, PUNTO, PUNTOS, BAJO, PARA, PARC, LLAVEA, LLAVEC; 
     terminal String FECHAC, IGUAL, D, R, IU, IDE, P, T, CU, NOM, APE, TEL, EM, DIR;
-    terminal String TIENDA, TIPO, COD, PROP, IMG, PROP2, TIPO2,  MARCA, COLOR, TAM, SUCURSAL, PROD, MATE, CONS, EXTRAER, DE, QUERY;
+    terminal String TIENDA, TIPO, COD, PROP, IMG, PROP2, TIPO2, CANT, MARCA, COLOR, TAM, SUCURSAL, PROD, MATE, CONS, EXTRAER, DE, QUERY;
     terminal String DONDE, OR, AND, NOT, GET, MD, PT, RQ, ABREC, CIERRAC;
-    terminal Numero num;
-    terminal Id id;
-    terminal Cadena CANT;
+    terminal String num;
+    terminal String id;
+    terminal String CADS;
     non terminal Produccion_progrma programa; 
     non terminal Produccion_expresion in, expresion;
     non terminal Produccion_termino termino; 
@@ -76,6 +78,7 @@
     non terminal Produccion_dec dec; 
     non terminal Produccion_pro pro;
     non terminal Produccion_exp exp;
+    non terminal Nodo raiz;
 
     precedence left MAS, MENOS;
     precedence left POR, DIV;
@@ -83,9 +86,10 @@
 
     
 //INICIO DEL PARSER
-    start with programa;
+    start with raiz;
 
 //NIVEL 1
+    raiz::= programa:a{:RESULT =a;parser.raiz=RESULT;:};
     programa::=  programa:a pro:b {:RESULT = new List_programa(b,a);:}| pro:a {:RESULT = new Unit_programa(a);:};
     pro::=     D MATE NOM IGUAL logica:a D 
                 declara:b
@@ -107,8 +111,8 @@
                 
     cuerpo::= cuerpo:a c:b {:RESULT = new List_cuerpo(a,b);:}| c:b{:RESULT = new Unit_cuerpo(b);:};
     c::= D IU D 
-                D IDE D llamada:a D IDE MD 
-                D P D llamada:b D P MD 
+                D IDE D num:a D IDE MD 
+                D P D id:b D P MD 
               D IU MD {:RESULT = new Inicio_usuario(a,b);:} //inicio de usuario
 
               |D CU D 
@@ -135,23 +139,23 @@
 
 //NIVEL 2 LISTAS DENTRO DE NIVEL 1
 
-    list1::= list1:a l1:b {:RESULT = a;a.add(b);:} | l1:a{:RESULT = new LinkedList<Objeto>();
+    list1::= list1:a l1:b {:RESULT = a;a.add(b);:} | l1:a{:RESULT = new LinkedList<Objeto>();//crea_usuario
 RESULT.add(a);:};
-    l1::= D IDE:a D llamada:b D IDE MD {:RESULT = new Objeto(a,b);:}
-                |D NOM:a D llamada:b D NOM MD {:RESULT = new Objeto(a,b);:}
-                |D APE:a D llamada:b D APE MD {:RESULT = new Objeto(a,b);:}
-                |D P:a D llamada:b D P MD {:RESULT = new Objeto(a,b);:}
-                |D TEL:a D llamada:b D TEL MD {:RESULT = new Objeto(a,b);:} 
-                |D EM:a D llamada:b D EM MD {:RESULT = new Objeto(a,b);:}
-                |D DIR:a D llamada:b D DIR MD {:RESULT = new Objeto(a,b);:}; 
-    
+    l1::= D IDE:a D num:b D IDE MD {:RESULT = new Objeto(a,b);:}
+                |D NOM:a D CADS:b D NOM MD {:RESULT = new Objeto(a,b);:}
+                |D APE:a D CADS:b D APE MD {:RESULT = new Objeto(a,b);:}
+                |D P:a D id:b D P MD {:RESULT = new Objeto(a,b);:}
+                |D TEL:a D num:b D TEL MD {:RESULT = new Objeto(a,b);:} 
+                |D EM:a D id:b D EM MD {:RESULT = new Objeto(a,b);:}
+                |D DIR:a D CADS:b D DIR MD {:RESULT = new Objeto(a,b);:}; 
+    //registra tienda
     list2::= list2:a l2:b {:RESULT = a;a.add(b);:}| l2:a{:RESULT = new LinkedList<Objeto>();RESULT.add(a);:};
-    l2::= D COD:a D llamada:b D COD MD {:RESULT = new Objeto(a,b);:}
-                |D PROP:a D llamada:b D PROP MD {:RESULT = new Objeto(a,b);:}
-                |D NOM:a D llamada:b D NOM MD {:RESULT = new Objeto(a,b);:}
-                |D DIR:a D llamada:b D DIR MD {:RESULT = new Objeto(a,b);:}
-                |D TEL:a D llamada:b D TEL MD {:RESULT = new Objeto(a,b);:}
-                |D IMG:a D llamada:b D IMG MD {:RESULT = new Objeto(a,b);:};
+    l2::= D COD:a D num:b D COD MD {:RESULT = new Objeto(a,b);:}
+                |D PROP:a D num:b D PROP MD {:RESULT = new Objeto(a,b);:}
+                |D NOM:a D CADS:b D NOM MD {:RESULT = new Objeto(a,b);:}
+                |D DIR:a D CADS:b D DIR MD {:RESULT = new Objeto(a,b);:}
+                |D TEL:a D num:b D TEL MD {:RESULT = new Objeto(a,b);:}
+                |D IMG:a D CADS:b D IMG MD {:RESULT = new Objeto(a,b);:};
 
 //modifica tienda
    list3::= list3:a COMA l3:b {:RESULT = a;a.add(b);:}| l3:a {:RESULT = new LinkedList<Objeto>();RESULT.add(a);:};
@@ -198,7 +202,7 @@ RESULT.add(a);:};
  
 llamada::= ABREC logica:a COMA llam:b CIERRAC {:RESULT = new Llamada_funcion(a,b);:}
             | logica:a {:RESULT = new Llamada_logica(a);:};
-llam::= id:a PARA paramet:b PARC {:RESULT = new Llam_fuc(a,b);:}
+llam::= id:a PARA paramet:b PARC {:RESULT = new Llam_fuc(new Id(a),b);:}
             | logica:a {:RESULT = new Llam_cons(a);:};
 paramet::= paramet:a COMA logica:b {:RESULT = new Paramet_dos(a,b);:} | logica:a {:RESULT = new Paramet_uno(a);:};
 
@@ -218,9 +222,9 @@ paramet::= paramet:a COMA logica:b {:RESULT = new Paramet_dos(a,b);:} | logica:a
     | PT PARA logica:a PARC {:RESULT = new Factor_potencia(a);:}
     | RQ PARA logica:a PARC {:RESULT = new Factor_exponente(a);:}
     | LLAVEA logica:a LLAVEC {:RESULT = new Logica_llave(a);:}
-    | MENOS expresion:a {:RESULT = new Factor_expresion(a);:}
-    | num:a {:RESULT = new Factor_numero(a);:}
-    | id:a {:RESULT = new Factor_id(a);:}
-    | CADS:a {:RESULT = new Factor_cadena(a);:};
+    | MENOS expresion:a {:RESULT = new Factor_menos(a);:}
+    | num:a {:RESULT = new Numero(a);:}
+    | id:a {:RESULT = new Id(a);:}
+    | CADS:a {:RESULT = new Cadena(a);:};
 
 

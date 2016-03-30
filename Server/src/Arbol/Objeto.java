@@ -16,6 +16,11 @@ public class Objeto {
   String clave;
   Produccion_llamada llamada;
   LinkedList<Objeto> lis;
+  String valor;
+
+    public String getValor() {
+        return valor;
+    }
 
     public LinkedList<Objeto> getLis() {
         return lis;
@@ -28,6 +33,10 @@ public class Objeto {
         this.lis = lis;
     }
 
+    public Objeto(String clave, String llamada) {
+        this.clave = clave;
+        this.valor = llamada;
+    }
     public Objeto(String clave, Produccion_llamada llamada) {
         this.clave = clave;
         this.llamada = llamada;

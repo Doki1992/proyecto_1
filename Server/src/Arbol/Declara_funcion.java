@@ -11,11 +11,11 @@ package Arbol;
  * @author twa
  */
 public class Declara_funcion implements Produccion_dec{
-    public Id id;
+    public String id;
     public Produccion_logica logica;
     public Produccion_paramet paramet;
 
-    public Declara_funcion(Id id, Produccion_logica logica, Produccion_paramet paramet) {
+    public Declara_funcion(String id, Produccion_logica logica, Produccion_paramet paramet) {
         this.id = id;
         this.logica = logica;
         this.paramet = paramet;
@@ -24,7 +24,7 @@ public class Declara_funcion implements Produccion_dec{
 
     @Override
     public Object Acept(Visitor v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return  v.vistit(this);
     }
     
 }

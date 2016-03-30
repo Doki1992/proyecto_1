@@ -22,7 +22,7 @@ public class Elimina_tienda implements Produccion_c{
 
     @Override
     public Object Acept(Visitor v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      return  v.vistit(this);
     }
     
 }

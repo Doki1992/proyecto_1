@@ -10,7 +10,7 @@ package Arbol;
  *
  * @author twa
  */
-public class Numero implements Terminal{
+public class Numero implements Produccion_factor{
     public String numero;
 
     public Numero(String numero) {
@@ -20,7 +20,7 @@ public class Numero implements Terminal{
 
     @Override
     public Object Acept(Visitor v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return  v.vistit(this);
     }
     
 }

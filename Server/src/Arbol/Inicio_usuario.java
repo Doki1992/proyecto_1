@@ -11,10 +11,10 @@ package Arbol;
  * @author twa
  */
 public class Inicio_usuario implements Produccion_c{
-    Produccion_llamada llamada;
-    Produccion_llamada llamada1;
+    String llamada;
+    String llamada1;
 
-    public Inicio_usuario(Produccion_llamada llamada, Produccion_llamada llamada1) {
+    public Inicio_usuario(String llamada, String llamada1) {
         this.llamada = llamada;
         this.llamada1 = llamada1;
     }
@@ -22,7 +22,7 @@ public class Inicio_usuario implements Produccion_c{
 
     @Override
     public Object Acept(Visitor v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return  v.vistit(this);
     }
     
 }

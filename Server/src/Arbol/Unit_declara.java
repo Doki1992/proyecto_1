@@ -19,7 +19,7 @@ public class Unit_declara implements Produccion_declara{
     
     @Override
     public Object Acept(Visitor v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return  v.vistit(this);
     }
     
 }

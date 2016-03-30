@@ -19,7 +19,7 @@ public class Exp_query1 implements Produccion_exp{
     }
     @Override
     public Object Acept(Visitor v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      return  v.vistit(this);
     }
     
 }

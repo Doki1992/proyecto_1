@@ -11,7 +11,8 @@ package Arbol;
  * @author twa
  */
 public interface Visitor {
-    public Object vistit(Nodo n);
+    public Object vistit(Paramet_dos dos);
+    public Object vistit(Paramet_uno uno);
     public Object vistit(Cadena c);
     public Object vistit(Crea_producto cp);
     public Object vistit(Crea_usuario cu);
@@ -24,11 +25,8 @@ public interface Visitor {
     public Object vistit(Expresion_mas expmas);
     public Object vistit(Expresion_menos exmenos);
     public Object vistit(Expresion_termino extermino);
-    public Object vistit(Factor_cadena fcadena);
     public Object vistit(Factor_exponente fexponente);
-    public Object vistit(Factor_id fid);
     public Object vistit(Factor_menos fmenos);
-    public Object vistit(Factor_numero fnumero);
     public Object vistit(Factor_potencia fpotencia);
     public Object vistit(Get_tiendas gtiendas);
     public Object vistit(Id id);
@@ -55,6 +53,7 @@ public interface Visitor {
     public Object vistit(Operaciones_producto opeproducto);
     public Object vistit(Parentesis_logica plogica);
     public Object vistit(Query q);
+    public Object vistit(Registro_tienda rt);
     public Object vistit(Termino_division terdivision);
     public Object vistit(Termino_factor terfactor);
     public Object vistit(Termino_por terpor);

@@ -1,9 +1,8 @@
 package server;
 
+import Arbol.*;
 import analizadores.ALexicoS;
 import analizadores.ASintacticoS;
-//import analizadores.Lexicop;
-//import analizadores.Yytoken;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -39,7 +38,8 @@ Document documento = new Document() {};
             
             //ejecutar el analisis
             parser.parse();
-            
+            Nodo raiz = parser.getRaiz();
+            raiz.Acept(new Traductor());
             if(parser.err==true){
 
                 if(parser.tab.isEmpty()){
@@ -68,9 +68,11 @@ Document documento = new Document() {};
         } 
         catch (Exception ex) 
         {
+            System.err.println(ex.getMessage());
             Logger.getLogger(EjecutaAnalisis.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Ocurrio un grave problema","Ejemplo",2);
             return "Error Encontrado";
+            
         }        
     }
     
