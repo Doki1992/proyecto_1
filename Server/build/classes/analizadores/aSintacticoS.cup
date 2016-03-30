@@ -159,12 +159,12 @@ RESULT.add(a);:};
 
 //modifica tienda
    list3::= list3:a COMA l3:b {:RESULT = a;a.add(b);:}| l3:a {:RESULT = new LinkedList<Objeto>();RESULT.add(a);:};
-    l3::= TIPO:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}
-            | COD:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}
-            | PROP:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}
-            | NOM:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}
-            | DIR:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}
-            | TEL:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}; 
+    l3::= TIPO:a IGUAL CADS:b {:RESULT = new Objeto(a,b);:}
+            | COD:a IGUAL num:b {:RESULT = new Objeto(a,b);:}
+            | PROP:a IGUAL num:b {:RESULT = new Objeto(a,b);:}
+            | NOM:a IGUAL CADS:b {:RESULT = new Objeto(a,b);:}
+            | DIR:a IGUAL CADS:b {:RESULT = new Objeto(a,b);:}
+            | TEL:a IGUAL num:b {:RESULT = new Objeto(a,b);:}; 
 
    list4::= list4:a l4:b {:RESULT = a;a.add(b);:}| l4:a{:RESULT = new LinkedList<Objeto>();RESULT.add(a);:}; //elimina tienda 
     l4::= D COD:a D llamada:b D COD MD {:RESULT = new Objeto(a,b);:}

@@ -7,6 +7,7 @@
 package Arbol;
 
 import Estructura_store.*;
+import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import java.util.Hashtable;
 import java.util.LinkedList;
 
@@ -262,7 +263,9 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(Modifica_tienda modificatienda) {
-      return modificatienda.list3;
+        crea_tienda= new Crea_datos_tienda(modificatienda.list3);
+        crea_tienda.modificc_Tienda(this.t_usuarios);
+      return null;
     }
 
     @Override
@@ -341,7 +344,7 @@ public class Traductor implements Visitor{
     public Object vistit(Registro_tienda rt) {
     crea_tienda = new Crea_datos_tienda(rt.list2);
     if(!claves_tienda.containsKey(crea_tienda.creaTienda().getCodigo())){
-        claves_tienda.put(crea_tienda.creaTienda().getCodigo(), crea_tienda.creaTienda().getCodigo()    );
+        claves_tienda.put(crea_tienda.creaTienda().getCodigo(), crea_tienda.creaTienda().getCodigo());
     if(this.t_usuarios.containsKey(crea_tienda.creaTienda().getPropietario())){
         mensaje=new String("tienda crea con exito"); this.Log.add(mensaje);
         this.t_usuarios.getUsuario(crea_tienda.creaTienda().getPropietario()).getTiendas().put(crea_tienda.creaTienda().getCodigo(),crea_tienda.creaTienda());

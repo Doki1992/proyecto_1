@@ -16,6 +16,30 @@ public class Tienda {
     String nombre;
     String direccion;
     String telefono;
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public void setPropietario(String propietario) {
+        this.propietario = propietario;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
     String img;
     Tabla_producto productos;
 
