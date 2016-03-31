@@ -19,7 +19,7 @@ public class Traductor implements Visitor{
     
     Tabla_usuario t_usuarios = new Tabla_usuario();
     String mensaje;
-    LinkedList<String> Log=new LinkedList<>();
+    public  LinkedList<String> Log=new LinkedList<>();
     Crea_datos_usuario crea_usuario;
     Crea_datos_tienda crea_tienda;
     Hashtable<String, String> claves_tienda = new Hashtable<>();
@@ -69,8 +69,7 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(Elimina_tienda Et) {
-        crea_tienda = new Crea_datos_tienda(Et.list4);
-        crea_tienda.elimina_Tienda(t_usuarios);
+        crea_tienda = new Crea_datos_tienda(Et.list4,this.t_usuarios);
         Log.add(crea_tienda.getMensaje());
         return null;
     }
@@ -266,8 +265,8 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(Modifica_Elimina_tienda modificatienda) {
-        crea_tienda= new Crea_datos_tienda(modificatienda.list3);
-        crea_tienda.modificc_Tienda(this.t_usuarios);
+        crea_tienda= new Crea_datos_tienda(modificatienda.list3,this.t_usuarios);
+        //crea_tienda.modificc_Tienda(this.t_usuarios);
         this.Log.add(crea_tienda.getMensaje());
       return null;
     }
@@ -346,14 +345,14 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(Registro_tienda rt) {
-    crea_tienda = new Crea_datos_tienda(rt.list2);
+    crea_tienda = new Crea_datos_tienda(rt.list2,this.t_usuarios);
     if(!claves_tienda.containsKey(crea_tienda.creaTienda().getCodigo())){
-        claves_tienda.put(crea_tienda.creaTienda().getCodigo(), crea_tienda.creaTienda().getCodigo());
-    if(this.t_usuarios.containsKey(crea_tienda.creaTienda().getPropietario())){
+        claves_tienda.put(crea_tienda.getT().getCodigo(), crea_tienda.getT().getCodigo());
+    if(this.t_usuarios.containsKey(crea_tienda.getT().getPropietario())){
         mensaje=new String("tienda crea con exito"); this.Log.add(mensaje);
-        this.t_usuarios.getUsuario(crea_tienda.creaTienda().getPropietario()).getTiendas().put(crea_tienda.creaTienda().getCodigo(),crea_tienda.creaTienda());
+        this.t_usuarios.getUsuario(crea_tienda.creaTienda().getPropietario()).getTiendas().put(crea_tienda.getT().getCodigo(),crea_tienda.getT());
     }else{
-        mensaje=new String("El usuario "+crea_tienda.creaTienda().getPropietario()+" no existe");this.Log.add(mensaje);
+        mensaje=new String("El usuario "+crea_tienda.getT().getPropietario()+" no existe");this.Log.add(mensaje);
     }
     }else{mensaje = new String("La tienda con codigo ya existe");this.Log.add(mensaje);}
     return rt.list2;        

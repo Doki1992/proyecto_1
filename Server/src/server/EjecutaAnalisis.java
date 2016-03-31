@@ -39,7 +39,8 @@ Document documento = new Document() {};
             //ejecutar el analisis
             parser.parse();
             Nodo raiz = parser.getRaiz();
-            raiz.Acept(new Traductor());
+            Traductor tra = new Traductor();
+            raiz.Acept(tra);
             if(parser.err==true){
 
                 if(parser.tab.isEmpty()){
@@ -59,6 +60,9 @@ Document documento = new Document() {};
 
             }else{
                  G_Server.jTextArea1.append( "\n" + "Análisis Sintáctico Completado.");
+                 for(int i =0; i<tra.Log.size();i++){
+                     G_Server.jTextArea1.append("\n" +tra.Log.get(i));
+                 }
               
             }
             

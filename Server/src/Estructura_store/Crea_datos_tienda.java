@@ -21,19 +21,33 @@ public class Crea_datos_tienda {
     String direccion="null";
     String telefono="null";
     String img="null";
+    String tipo="null";
+    Tienda t;
+
+    public Tienda getT() {
+        return t;
+    }
     LinkedList<Objeto> lista;
     String mensaje;
 
     public String getMensaje() {
         return mensaje;
     }
-    public Crea_datos_tienda(LinkedList<Objeto> lista) {
+    public Crea_datos_tienda(LinkedList<Objeto> lista,Tabla_usuario usuarios) {
         this.lista = lista;
+        set_datos();
+        if(tipo.contains("elimi")){
+            elimina_Tienda(usuarios);
+        }else if(tipo.contains("modifi")){
+            modificc_Tienda(usuarios);
+        }else{
+            creaTienda();
+        }
     }
     
     public Tienda creaTienda(){
         set_datos();
-        Tienda t=new Tienda(codigo, propietario, nombre, direccion, telefono, img, new Tabla_producto());
+        t=new Tienda(codigo, propietario, nombre, direccion, telefono, img, new Tabla_producto());
         reset_datos();
         return  t;
     }
@@ -42,7 +56,8 @@ public class Crea_datos_tienda {
         set_datos();
         if(usuarios.containsKey(propietario)){
             if(usuarios.getUsuario(propietario).tiendas.containsKey(codigo)){
-                usuarios.getUsuario(propietario).tiendas.remove(usuarios.getUsuario(propietario).tiendas.getTienda(codigo));
+                Tabla_tienda t =usuarios.getUsuario(propietario).tiendas;
+                t.remove(codigo);
             mensaje=new String("La tienda con id "+codigo+" ha sido eliminada");
             }else{
             mensaje = new String("La Tienda con id " +codigo+" no existe");
@@ -79,6 +94,18 @@ public class Crea_datos_tienda {
         reset_datos();
     }
     
+    public void elimina_tienda(Tabla_usuario usuarios){
+        if(usuarios.containsKey(propietario)){
+            if(usuarios.getUsuario(propietario).tiendas.containsKey(codigo)){
+              usuarios.getUsuario(propietario).tiendas.remove(codigo);
+            }else{
+            mensaje = new String("la tienda no existe");
+            }
+        }else{
+            mensaje = new String("el usuario no existe");
+        }
+    }
+    
     private void set_datos(){
         for(int i=0; i<lista.size();i++){
             if(lista.get(i).getClave().equals("codigo")){
@@ -99,16 +126,20 @@ public class Crea_datos_tienda {
             if(lista.get(i).getClave().equals("img")){
                 this.img=lista.get(i).getValor();
             }
+            if(lista.get(i).getClave().equals("tipo")){
+                this.tipo=lista.get(i).getValor();
+            }
         }
     }
     
     private void reset_datos(){
-        codigo=new String("null");
+    codigo=new String("null");
     propietario=new String("null");
     nombre=new String("null");
     direccion=new String("null");
     telefono=new String("null");
     img=new String("null");
+    tipo=new String("null");
     }
     
 }
