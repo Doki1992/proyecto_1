@@ -22,8 +22,9 @@ public class Traductor implements Visitor{
     public  LinkedList<String> Log=new LinkedList<>();
     Crea_datos_usuario crea_usuario;
     Crea_datos_tienda crea_tienda;
+    Crea_datos_producto crea_producto;
     Hashtable<String, String> claves_tienda = new Hashtable<>();
-    Hashtable<String, String> claves_producto = new Hashtable<>();
+    public Hashtable<String, String> claves_producto = new Hashtable<>();
     
     
    
@@ -34,15 +35,23 @@ public class Traductor implements Visitor{
     }
 
     @Override
-    public Object vistit(Crea_producto cp) {
-        return cp.list5;
+    public Object vistit(Crea_modifica_producto cp) {
+        crea_producto = new Crea_datos_producto(cp.list5, t_usuarios, cp.operacion,this);
+        Log.add(crea_producto.getMensaje());
+        return null;
     }
 
     @Override
     public Object vistit(Crea_usuario cu) {
+        
         crea_usuario=new Crea_datos_usuario(cu.list1);
+        if(!this.t_usuarios.containsKey(crea_usuario.creaUsuario().getId())){
         this.t_usuarios.put(crea_usuario.creaUsuario().getId(), crea_usuario.creaUsuario());
         mensaje = new String("Usuario creado con exito");this.Log.add(mensaje);
+        }else{
+        mensaje = new String("El usuario ya existe");this.Log.add(mensaje);
+        }
+        
         return  cu.list1;
     }
 
@@ -167,11 +176,7 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(L_or lor) {
-      if((boolean)lor.logica.Acept(this)||(boolean)lor.rel.Acept(this)){
-          return true;
-      }   else{
-          return false;
-      }
+        return (boolean)lor.logica.Acept(this)||(boolean)lor.rel.Acept(this);
     }
 
     @Override
@@ -255,7 +260,7 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(Menor_rel menorel) {
-        if(Double.parseDouble((String)menorel.rel.Acept(this))<Double.parseDouble((String)menorel.in.Acept(this))){
+        if(Double.parseDouble((String)menorel.rel.Acept(this))>Double.parseDouble((String)menorel.in.Acept(this))){
             return true;
         }else{
             return false;
@@ -266,7 +271,6 @@ public class Traductor implements Visitor{
     @Override
     public Object vistit(Modifica_Elimina_tienda modificatienda) {
         crea_tienda= new Crea_datos_tienda(modificatienda.list3,this.t_usuarios);
-        //crea_tienda.modificc_Tienda(this.t_usuarios);
         this.Log.add(crea_tienda.getMensaje());
       return null;
     }

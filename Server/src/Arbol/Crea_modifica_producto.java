@@ -12,10 +12,15 @@ import java.util.LinkedList;
  *
  * @author twa
  */
-public class Crea_producto implements Produccion_c{
+public class Crea_modifica_producto implements Produccion_c{
 public LinkedList<Objeto> list5;
+public String operacion ;
 
-    public Crea_producto(LinkedList<Objeto> list5) {
+    public Crea_modifica_producto(LinkedList<Objeto> list5, String operacion) {
+        this.list5 = list5;
+        this.operacion = operacion;
+    }
+    public Crea_modifica_producto(LinkedList<Objeto> list5) {
         this.list5 = list5;
     }
 

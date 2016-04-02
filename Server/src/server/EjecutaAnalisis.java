@@ -20,7 +20,8 @@ import javax.swing.JOptionPane;
  */
 public class EjecutaAnalisis 
 {
-    
+     Traductor tra = new Traductor();
+      Nodo raiz;
     public EjecutaAnalisis()
     {
         
@@ -32,14 +33,13 @@ Document documento = new Document() {};
         try 
         {
             //crear el lexico
-                ALexicoS lexico = new ALexicoS(new StringReader(entrada));
+            ALexicoS lexico = new ALexicoS(new StringReader(entrada));
             //crear el sintactico
             ASintacticoS parser = new ASintacticoS(lexico);
             
             //ejecutar el analisis
             parser.parse();
-            Nodo raiz = parser.getRaiz();
-            Traductor tra = new Traductor();
+            raiz = parser.getRaiz();
             raiz.Acept(tra);
             if(parser.err==true){
 

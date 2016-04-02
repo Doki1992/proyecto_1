@@ -7,7 +7,7 @@ $request-$
 
 $request$
 $CrearUsuario$ 
-$id$ 5 $id-$ 
+$id$ 2 $id-$ 
 $nombre$ "nombre del usuario" $nombre-$ 
 $apellido$ "apellido del usuario" $apellido-$ 
 $password$ a1234b $password-$ 
@@ -19,8 +19,8 @@ $request-$
 
 $request$ 
 $tienda tipo= "crear"$ 
-$codigo$ 8 $codigo-$ 
-$propietario$ 5 $propietario-$ 
+$codigo$ 100 $codigo-$ 
+$propietario$ 2 $propietario-$ 
 $nombre$ "Librería Tatty" $nombre-$ 
 $direccion$ "Calle Real" $direccion-$ 
 $telefono$ 12345 $telefono-$ 
@@ -42,9 +42,6 @@ Propietario=2,
 nombre= "Librería Tatiana", 
 direccion="Guatemala", 
 telefono=12345678 -$ //notar que toda es la misma línea 
-//puede venir n cantidad de veces 
-$tienda codigo=100, propietario=2, tipo="modificación", direccion="Puerta Parada" -$ 
-$tienda codigo=100, propietario=2, telefono=2222, tipo="modificación" -$ 
 $request-$
 
 $request$ 

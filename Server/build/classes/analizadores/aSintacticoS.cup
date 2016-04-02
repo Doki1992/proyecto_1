@@ -125,11 +125,11 @@ public Nodo getRaiz(){return raiz;}
               
               | D TIENDA list3:a MD {:RESULT = new Modifica_Elimina_tienda(a);:}//modifica elimina tienda
                 
-              | D PROD TIPO IGUAL CADS D //producto
+              | D PROD TIPO IGUAL CADS:b D //producto
                 list4:a
-                D PROD MD {:RESULT = new Crea_producto(a);:}
+                D PROD MD {:RESULT = new Crea_modifica_producto(a,b);:}
 
-              | D PROD list5:a MD {:RESULT =  new Operaciones_producto(a);:}//modifica elimina producto
+              | D PROD list5:a MD {:RESULT =  new Crea_modifica_producto(a,"elimin"):}//modifica elimina producto
               
               | D TIENDA IDE IGUAL llamada D //operaciones sobre productos
                 list6:a
@@ -167,22 +167,22 @@ RESULT.add(a);:};
             | TEL:a IGUAL num:b {:RESULT = new Objeto(a,b);:}; 
 
    list4::= list4:a l4:b {:RESULT = a;a.add(b);:}| l4:a{:RESULT = new LinkedList<Objeto>();RESULT.add(a);:}; //crea producto
-    l4::= D COD:a D llamada:b D COD MD {:RESULT = new Objeto(a,b);:}
-            | D NOM:a D llamada:b D NOM MD {:RESULT = new Objeto(a,b);:}
-            | D CANT:a D llamada:b D CANT MD {:RESULT = new Objeto(a,b);:}
-            | D MARCA:a D llamada:b D MARCA MD {:RESULT = new Objeto(a,b);:}
-            | D COLOR:a D llamada:b D COLOR MD {:RESULT = new Objeto(a,b);:}
-            | D TAM:a D llamada:b D TAM MD {:RESULT = new Objeto(a,b);:}
-            | D IMG:a D llamada:b D IMG MD {:RESULT = new Objeto(a,b);:}
-            | D SUCURSAL:a D llamada:b D SUCURSAL MD {:RESULT = new Objeto(a,b);:}; 
+    l4::= D COD:a D num :b D COD MD {:RESULT = new Objeto(a,b);:}
+            | D NOM:a D CADS:b D NOM MD {:RESULT = new Objeto(a,b);:}
+            | D CANT:a D num:b D CANT MD {:RESULT = new Objeto(a,b);:}
+            | D MARCA:a D CADS:b D MARCA MD {:RESULT = new Objeto(a,b);:}
+            | D COLOR:a D CADS:b D COLOR MD {:RESULT = new Objeto(a,b);:}
+            | D TAM:a D num:b D TAM MD {:RESULT = new Objeto(a,b);:}
+            | D IMG:a D CADS:b D IMG MD {:RESULT = new Objeto(a,b);:}
+            | D SUCURSAL:a D num:b D SUCURSAL MD {:RESULT = new Objeto(a,b);:}; 
 
 
    list5::= list5:a l5:b {:RESULT = a;a.add(b);:}| l5:a {:RESULT = new LinkedList<Objeto>();RESULT.add(a);:}; //crea producto
-    l5::= TIPO:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}
-            | COD:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}
-            | SUCURSAL:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}
-            | NOM:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:}
-            | CANT:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:};
+    l5::= TIPO:a IGUAL CADS:b {:RESULT = new Objeto(a,b);:}
+            | COD:a IGUAL num:b {:RESULT = new Objeto(a,b);:}
+            | SUCURSAL:a IGUAL num:b {:RESULT = new Objeto(a,b);:}
+            | NOM:a IGUAL CADS:b {:RESULT = new Objeto(a,b);:}
+            | CANT:a IGUAL num:b {:RESULT = new Objeto(a,b);:};
 
 
     list6::= list6:a l6:b {:RESULT = a;a.add(b);:}| l6:a {:RESULT = new LinkedList<Objeto>();RESULT.add(a);:}; //acciones sobre productos

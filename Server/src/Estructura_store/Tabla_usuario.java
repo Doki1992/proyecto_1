@@ -6,6 +6,7 @@
 
 package Estructura_store;
 
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 /**
@@ -29,6 +30,20 @@ public class Tabla_usuario extends Hashtable<String, Usuario>{
     
     public Usuario getUsuario(String clave){
         return this.get(clave);
+    }
+    
+    public Tienda getTienda(String clave){
+       Enumeration e = this.keys();
+       Object key;
+       Usuario valor;
+       while( e.hasMoreElements() ){
+         key = e.nextElement();
+         valor = this.get( key );
+         if(valor.getTiendas().containsKey(clave)){
+             return valor.getTiendas().get(clave);
+         }
+         }
+       return null;
     }
     
     

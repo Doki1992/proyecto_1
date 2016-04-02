@@ -14,7 +14,7 @@ public interface Visitor {
     public Object vistit(Paramet_dos dos);
     public Object vistit(Paramet_uno uno);
     public Object vistit(Cadena c);
-    public Object vistit(Crea_producto cp);
+    public Object vistit(Crea_modifica_producto cp);
     public Object vistit(Crea_usuario cu);
     public Object vistit(Cuerpo cuerpo);
     public Object vistit(Declara_const dconst);

@@ -19,7 +19,9 @@ public class G_Server extends javax.swing.JFrame {
      */
     public G_Server() {
         initComponents();
+        c = new EjecutaAnalisis();
     }
+    EjecutaAnalisis c;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -110,7 +112,7 @@ File ent;
         
         if(area_in.getText().length()!=0 || !area_in.getText().equals(""))
         {
-            EjecutaAnalisis c = new EjecutaAnalisis();
+            
             String salida = c.analizaFile(area_in.getText());
         }
         

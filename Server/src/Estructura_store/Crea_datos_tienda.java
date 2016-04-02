@@ -68,6 +68,7 @@ public class Crea_datos_tienda {
         reset_datos();
     }
     
+    
     public void modificc_Tienda(Tabla_usuario usuarios){
         set_datos();
         if(usuarios.containsKey(this.propietario)){
