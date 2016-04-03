@@ -29,12 +29,15 @@ public class Traductor implements Visitor{
     public Tabla_funciones_mate Tabla_Espacio_mate= new Tabla_funciones_mate();
     Mate_token mt;
     Funcion_info funcion_i;
+    Funcion_info query_info=new Funcion_info();
     
     
    
 
     @Override
     public Object vistit(Cadena c) {
+        String aux = c.cadena.replace("\"", "");
+        query_info.Insertar(aux, new Cons_token(aux, ""));
         return (String)c.cadena;
     }
 
@@ -86,12 +89,12 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(Exp_query1 expquery1) {
-        return (boolean)expquery1.logica.Acept(this);
+        return null;//(boolean)expquery1.logica.Acept(this);
     }
 
     @Override
     public Object vistit(Exp_query2 expquery2) {
-        expquery2.logica1.Acept(this);
+       // expquery2.logica1.Acept(this);
         expquery2.logica2.Acept(this);//esta es la expresion a evaluar
         return null;
     }
@@ -107,8 +110,8 @@ public class Traductor implements Visitor{
     }
 
     @Override
-    public Object vistit(Expresion_termino extermino) {
-       return Double.parseDouble((String)extermino.termino.Acept(this).toString());
+    public Object vistit(Expresion_termino extermino){
+       return extermino.termino.Acept(this).toString();//cambio esta linea
     }
 
    
@@ -187,6 +190,7 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(L_rel lrel) {
+      
        return lrel.rel.Acept(this);
         
     }
@@ -383,4 +387,13 @@ public class Traductor implements Visitor{
     }else{mensaje = new String("La tienda con codigo ya existe");this.Log.add(mensaje);}
     return rt.list2;        
     } 
+
+    @Override
+    public Object vistit(L_igual li) {
+        if(li.logica.Acept(this).toString().equals(li.rel.Acept(this).toString())){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

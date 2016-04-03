@@ -42,6 +42,7 @@ public static LinkedList<String> tokens  = new LinkedList();
 /* PALABRAS RESERVADAS */
 
 "+"             { return new Symbol(sym.MAS,yycolumn,yyline, new String("+"));}
+"=="             { return new Symbol(sym.IGUALIGUAL,yycolumn,yyline, new String("+"));}
 "-"             { return new Symbol(sym.MENOS,yycolumn,yyline, new String("-"));}
 "*"             { return new Symbol(sym.POR,yycolumn,yyline, new String("*"));}  
 "/"             { return new Symbol(sym.DIV,yycolumn,yyline, new String("/"));}

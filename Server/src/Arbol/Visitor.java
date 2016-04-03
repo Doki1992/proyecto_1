@@ -62,5 +62,6 @@ public interface Visitor {
     public Object vistit(Unit_cuerpo ucuerpo);
     public Object vistit(Unit_declara udeclara);
     public Object vistit(Unit_programa uprograma);  
+    public Object vistit(L_igual li);  
     
 }

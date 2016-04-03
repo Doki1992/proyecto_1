@@ -61,6 +61,7 @@ public Nodo getRaiz(){return raiz;}
     terminal String num;
     terminal String id;
     terminal String CADS;
+    terminal String IGUALIGUAL;
     non terminal Produccion_progrma programa; 
     non terminal Produccion_expresion in, expresion;
     non terminal Produccion_termino termino; 
@@ -195,6 +196,7 @@ RESULT.add(a);:};
     logica::= logica:a OR rel:b {:RESULT = new L_or(a,b);:}
             | logica:a XOR rel:b {:RESULT = new L_xor(a,b);:}
             | logica:a AND rel:b {:RESULT = new L_and(a,b);:}
+            | logica:a IGUALIGUAL rel:b{:RESULT = new L_igual(a,b); :}
             | rel:a {:RESULT =new L_rel(a);:};
 
     rel::=  NOT in:a {:RESULT = new Not_rel(a);:}

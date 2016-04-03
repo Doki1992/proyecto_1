@@ -1220,7 +1220,7 @@ public static LinkedList<String> tokens  = new LinkedList();
           if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
             zzAtEOF = true;
             zzDoEOF();
-              { return new java_cup.runtime.Symbol(sym1.EOF); }
+              { return new java_cup.runtime.Symbol(sym.EOF); }
           } 
           else {
             zzScanError(ZZ_NO_MATCH);
