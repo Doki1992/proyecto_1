@@ -12,12 +12,12 @@ package Arbol;
  */
 public class Declara_funcion implements Produccion_dec{
     public String id;
-    public Produccion_logica logica;
+    public Produccion_expresion expresion;
     public Produccion_paramet paramet;
 
-    public Declara_funcion(String id, Produccion_logica logica, Produccion_paramet paramet) {
+    public Declara_funcion(String id, Produccion_expresion expresion, Produccion_paramet paramet) {
         this.id = id;
-        this.logica = logica;
+        this.expresion = expresion;
         this.paramet = paramet;
     }
     

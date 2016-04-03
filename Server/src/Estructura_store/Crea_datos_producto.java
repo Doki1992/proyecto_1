@@ -55,7 +55,7 @@ public class Crea_datos_producto {
             if(lista.get(i).getClave().equals("nombre")){
                 this.nombre=lista.get(i).getValor();
             }
-            if(lista.get(i).getClave().equals("cantidad")){
+            if(lista.get(i).getClave().equals("cantidad")&&lista.get(i).getValor()!=null){
                 this.cantidad=lista.get(i).getValor();
             }
             if(lista.get(i).getClave().equals("marca")){
@@ -64,7 +64,7 @@ public class Crea_datos_producto {
             if(lista.get(i).getClave().equals("color")){
                 this.color=lista.get(i).getValor();
             }
-            if(lista.get(i).getClave().equals("tamaño")){
+            if(lista.get(i).getClave().equals("tamaño")&&lista.get(i).getValor()!=null){
                 this.tamano=lista.get(i).getValor();
             }
             if(lista.get(i).getClave().equals("img")){
@@ -78,6 +78,12 @@ public class Crea_datos_producto {
             }
             if(lista.get(i).getClave().equals("tipo")){
                 this.tipo=lista.get(i).getValor();
+            }
+            if(lista.get(i).getLlamada()!=null&&lista.get(i).getClave().equals("cantidad")){
+                this.cantidad = lista.get(i).getLlamada().Acept(t).toString();
+            }
+            if(lista.get(i).getLlamada()!=null&&lista.get(i).getClave().equals("tamaño")){
+                this.tamano = lista.get(i).getLlamada().Acept(t).toString();
             }
         }
         

@@ -73,7 +73,7 @@ public Nodo getRaiz(){return raiz;}
     non terminal Produccion_c c;
     non terminal Produccion_llamada llamada; 
     non terminal Produccion_llam llam; 
-    non terminal Produccion_paramet paramet;
+    non terminal LinkedList<String> paramet;
     non terminal Produccion_declara declara; 
     non terminal Produccion_dec dec; 
     non terminal Produccion_pro pro;
@@ -105,7 +105,7 @@ public Nodo getRaiz(){return raiz;}
                 
     declara::= declara:a dec:b {:RESULT = new List_declara(a,b);:}| dec:a{:RESULT = new Unit_declara(a);:};
     dec::= CONS id:a IGUAL logica:b PUNTOC {:RESULT = new Declara_const(a,b);:}
-                | id:a PARA paramet:b PARC IGUAL LLAVEA logica:c LLAVEC PUNTOC{:RESULT = new Declara_funcion(a,c,b);:};
+                | id:a PARA paramet:b PARC IGUAL LLAVEA expresion:c LLAVEC PUNTOC{:RESULT = new Declara_funcion(a,c,b);:};
      
     exp::= EXTRAER DE logica:a PUNTOC {:RESULT = new Exp_query1(a);:}| EXTRAER DE logica:a DONDE logica:b PUNTOC{:RESULT = new Exp_query2(a,b);:};            
                 
@@ -129,7 +129,7 @@ public Nodo getRaiz(){return raiz;}
                 list4:a
                 D PROD MD {:RESULT = new Crea_modifica_producto(a,b);:}
 
-              | D PROD list5:a MD {:RESULT =  new Crea_modifica_producto(a,"elimin"):}//modifica elimina producto
+              | D PROD list5:a MD {:RESULT =  new Crea_modifica_producto(a,"elimin");:}//modifica elimina producto
               
               | D TIENDA IDE IGUAL llamada D //operaciones sobre productos
                 list6:a
@@ -169,10 +169,10 @@ RESULT.add(a);:};
    list4::= list4:a l4:b {:RESULT = a;a.add(b);:}| l4:a{:RESULT = new LinkedList<Objeto>();RESULT.add(a);:}; //crea producto
     l4::= D COD:a D num :b D COD MD {:RESULT = new Objeto(a,b);:}
             | D NOM:a D CADS:b D NOM MD {:RESULT = new Objeto(a,b);:}
-            | D CANT:a D num:b D CANT MD {:RESULT = new Objeto(a,b);:}
+            | D CANT:a D llamada:b D CANT MD {:RESULT = new Objeto(a,b);:}
             | D MARCA:a D CADS:b D MARCA MD {:RESULT = new Objeto(a,b);:}
             | D COLOR:a D CADS:b D COLOR MD {:RESULT = new Objeto(a,b);:}
-            | D TAM:a D num:b D TAM MD {:RESULT = new Objeto(a,b);:}
+            | D TAM:a D llamada:b D TAM MD {:RESULT = new Objeto(a,b);:}
             | D IMG:a D CADS:b D IMG MD {:RESULT = new Objeto(a,b);:}
             | D SUCURSAL:a D num:b D SUCURSAL MD {:RESULT = new Objeto(a,b);:}; 
 
@@ -182,7 +182,7 @@ RESULT.add(a);:};
             | COD:a IGUAL num:b {:RESULT = new Objeto(a,b);:}
             | SUCURSAL:a IGUAL num:b {:RESULT = new Objeto(a,b);:}
             | NOM:a IGUAL CADS:b {:RESULT = new Objeto(a,b);:}
-            | CANT:a IGUAL num:b {:RESULT = new Objeto(a,b);:};
+            | CANT:a IGUAL llamada:b {:RESULT = new Objeto(a,b);:};
 
 
     list6::= list6:a l6:b {:RESULT = a;a.add(b);:}| l6:a {:RESULT = new LinkedList<Objeto>();RESULT.add(a);:}; //acciones sobre productos
@@ -205,7 +205,7 @@ llamada::= ABREC logica:a COMA llam:b CIERRAC {:RESULT = new Llamada_funcion(a,b
             | logica:a {:RESULT = new Llamada_logica(a);:};
 llam::= id:a PARA paramet:b PARC {:RESULT = new Llam_fuc(new Id(a),b);:}
             | logica:a {:RESULT = new Llam_cons(a);:};
-paramet::= paramet:a COMA logica:b {:RESULT = new Paramet_dos(a,b);:} | logica:a {:RESULT = new Paramet_uno(a);:};
+paramet::= paramet:a COMA id:b {:RESULT =a; a.add(b);:} | id:a {:RESULT = new LinkedList<>(); RESULT.add(a);:};
 
 //NIVEL 4 -  EXPRESIONES Y FACTORES  
  

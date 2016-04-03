@@ -6,15 +6,17 @@
 
 package Arbol;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author twa
  */
 public class Llam_fuc implements Produccion_llam{
     Id id;
-    Produccion_paramet paramet;
+    LinkedList<String> paramet;
 
-    public Llam_fuc(Id id, Produccion_paramet paramet) {
+    public Llam_fuc(Id id, LinkedList<String> paramet) {
         this.id = id;
         this.paramet = paramet;
     }

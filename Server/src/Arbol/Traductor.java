@@ -70,8 +70,7 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(Declara_funcion dfuncion) {
-        
-        dfuncion.logica.Acept(this);
+        dfuncion.expresion.Acept(this);
         dfuncion.paramet.Acept(this);
         return null;
     }
@@ -97,37 +96,37 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(Expresion_mas expmas) {
-         return Double.parseDouble((String)expmas.termino.Acept(this))-Double.parseDouble((String)expmas.expresion.Acept(this));
+         return Double.parseDouble((String)expmas.termino.Acept(this).toString())+Double.parseDouble((String)expmas.expresion.Acept(this).toString());
     }
 
     @Override
     public Object vistit(Expresion_menos exmenos) {
-        return Double.parseDouble((String)exmenos.termino.Acept(this))-Double.parseDouble((String)exmenos.expresion.Acept(this));
+        return Double.parseDouble((String)exmenos.termino.Acept(this).toString())-Double.parseDouble((String)exmenos.expresion.Acept(this).toString());
     }
 
     @Override
     public Object vistit(Expresion_termino extermino) {
-       return Double.parseDouble((String)extermino.termino.Acept(this));
+       return Double.parseDouble((String)extermino.termino.Acept(this).toString());
     }
 
    
 
     @Override
     public Object vistit(Factor_exponente fexponente) {
-       return (double)Math.sqrt(Double.parseDouble((String)fexponente.logica.Acept(this)));
+       return (double)Math.sqrt(Double.parseDouble((String)fexponente.logica.Acept(this).toString()));
     }
 
    
     @Override
     public Object vistit(Factor_menos fmenos) {
-        return (double) Double.parseDouble((String)fmenos.expresion.Acept(this))*-1;
+        return (double) Double.parseDouble((String)fmenos.expresion.Acept(this).toString())*-1;
     }
 
    
 
     @Override
     public Object vistit(Factor_potencia fpotencia) {
-     return (double)Math.pow(Double.parseDouble((String)fpotencia.logica.Acept(this)),2);
+     return (double)Math.pow(Double.parseDouble((String)fpotencia.logica.Acept(this).toString()),2);
     }
 
     @Override
@@ -239,7 +238,7 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(Logica_llave logicallave) {
-       return (String)logicallave.logica.Acept(this);
+       return (String)logicallave.logica.Acept(this).toString();
     }
 
     @Override
@@ -303,17 +302,17 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(Termino_division terdivision) {
-      return Double.parseDouble((String)terdivision.factor.Acept(this))/Double.parseDouble((String)terdivision.termino.Acept(this));
+      return Double.parseDouble((String)terdivision.factor.Acept(this).toString())/Double.parseDouble((String)terdivision.termino.Acept(this).toString());
     }
 
     @Override
     public Object vistit(Termino_factor terfactor) {
-        return terfactor.factor.Acept(this);
+        return terfactor.factor.Acept(this).toString();
     }
 
     @Override
     public Object vistit(Termino_por terpor) {
-        return Double.parseDouble((String)terpor.factor.Acept(this))/Double.parseDouble((String)terpor.termino.Acept(this));
+        return Double.parseDouble((String)terpor.factor.Acept(this).toString())*Double.parseDouble((String)terpor.termino.Acept(this).toString());
     }
 
     @Override
