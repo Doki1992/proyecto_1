@@ -1,0 +1,14 @@
+$request$ 
+$producto tipo="crear"$ 
+//solo las etiquetas que aparezcan se van a modificar 
+$codigo$ 2 $codigo-$ 
+$nombre$ "Tasa" $nombre-$ 
+$cantidad$ {8*33+1} $cantidad-$
+//Es lo mismo que $cantidad$ 265 $cantidad-$ ntidad$ 265 $cantidad-$ 
+$marca$ "Montoya" $marca-$ 
+$color$ "blanco" $color-$ 
+$tamaño$ {Pt(Rq((9+10)+10))} $tamaño-$ 
+$img$ "path de la imagen" $img-$ 
+$sucursal$ 3 $sucursal-$ 
+$producto-$ 
+$request-$

@@ -1,0 +1,109 @@
+$query$
+Extraer de Usuario donde NOM=="Justo" %% N(TEL==Vacio)%% N(DIR==Vacio);
+$query-$
+
+USUARIOS
+NOM nombre
+TEL telefono 
+APE apellido
+IDE identificador
+EMA correo
+DIR  direccion
+
+TIENDAS 
+COD codigo  
+PRO  propietario
+NOM
+DIR
+TEL
+
+PRODUCTOS
+COD 
+NOM
+CAN cantidad
+MAR marca
+COL color
+TAM tamano
+IMG img
+SUC sucursal
+
+
+$request$
+$CrearUsuario$ 
+$id$ 1 $id-$ 
+$nombre$ "mike" $nombre-$ 
+$apellido$ "apellido del usuario" $apellido-$ 
+$password$ a1234b $password-$ 
+$telefono$ 12345678 $telefono-$ 
+$email$ correocompi1com $email-$ 
+$direccion$ "direccion del usuario" $direccion-$ 
+$CrearUsuario-$ 
+
+$CrearUsuario$ 
+$id$ 2 $id-$ 
+$nombre$ "mikfffe" $nombre-$ 
+$apellido$ "gutierrez" $apellido-$ 
+$password$ a1234b $password-$ 
+$telefono$ 12345678 $telefono-$ 
+$email$ correocompi1com $email-$ 
+$direccion$ "direccion del usuario" $direccion-$ 
+$CrearUsuario-$ 
+
+
+$CrearUsuario$ 
+$id$ 3 $id-$ 
+$nombre$ "mike" $nombre-$ 
+$apellido$ "apellido del usuario" $apellido-$ 
+$password$ a1234b $password-$ 
+$telefono$ 123 $telefono-$ 
+$email$ correocompi1com $email-$ 
+$direccion$ "direccion del usuario" $direccion-$ 
+$CrearUsuario-$ 
+
+
+$CrearUsuario$ 
+$id$ 4 $id-$ 
+$nombre$ "mike" $nombre-$ 
+$apellido$ "apellido del usuario" $apellido-$ 
+$password$ a1234b $password-$ 
+$telefono$ 123 $telefono-$ 
+$email$ correocompi1com $email-$ 
+$direccion$ "direccion del usuario" $direccion-$ 
+$CrearUsuario-$
+$request-$
+
+$request$ 
+$tienda tipo= "crear"$ 
+$codigo$ 100 $codigo-$ 
+$propietario$ 1 $propietario-$ 
+$nombre$ "Librería Tatty" $nombre-$ 
+$direccion$ "Calle Real" $direccion-$ 
+$telefono$ 12345 $telefono-$ 
+$img$ "path de la imagen" $img-$ 
+$tienda-$ 
+
+$tienda tipo= "crear"$ 
+$codigo$ 101 $codigo-$ 
+$propietario$ 2 $propietario-$ 
+$nombre$ "Librería Tatty" $nombre-$ 
+$direccion$ "Calle Real" $direccion-$ 
+$telefono$ 12345 $telefono-$ 
+$img$ "path de la imagen" $img-$ 
+$tienda-$ 
+
+$tienda tipo= "crear"$ 
+$codigo$ 102 $codigo-$ 
+$propietario$ 3 $propietario-$ 
+$nombre$ "Librería Tatty" $nombre-$ 
+$direccion$ "Calle Real" $direccion-$ 
+$telefono$ 12345 $telefono-$ 
+$img$ "path de la imagen" $img-$ 
+$tienda-$ 
+$request-$
+
+
+
+$query$
+Extraer de Usuario donde PRO==1 ## PRO=2 ## PRO==3;
+$query-$
+

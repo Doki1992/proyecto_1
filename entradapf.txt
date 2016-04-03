@@ -72,4 +72,6 @@ $producto tipo="modificar" codigo=10 nombre="Plato" cantidad= {8*8 -1} -$
 $tienda-$ 
 $request-$
 
-
+$query$
+Extraer de Usuario donde Nombre=="Justo" %% N(Telefono==Vacio);
+$query-$
