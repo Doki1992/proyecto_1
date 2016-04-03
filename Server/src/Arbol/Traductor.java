@@ -29,15 +29,14 @@ public class Traductor implements Visitor{
     public Tabla_funciones_mate Tabla_Espacio_mate= new Tabla_funciones_mate();
     Mate_token mt;
     Funcion_info funcion_i;
-    Funcion_info query_info=new Funcion_info();
+    Ejecuta_query e_query;
     
     
    
 
     @Override
     public Object vistit(Cadena c) {
-        String aux = c.cadena.replace("\"", "");
-        query_info.Insertar(aux, new Cons_token(aux, ""));
+       
         return (String)c.cadena;
     }
 
@@ -89,13 +88,16 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(Exp_query1 expquery1) {
+        this.funcion_i= expquery1.info;
+        e_query= new Ejecuta_query(this.t_usuarios,funcion_i,expquery1.logica,this);
         return null;//(boolean)expquery1.logica.Acept(this);
     }
 
     @Override
     public Object vistit(Exp_query2 expquery2) {
-       // expquery2.logica1.Acept(this);
-        expquery2.logica2.Acept(this);//esta es la expresion a evaluar
+        this.funcion_i= expquery2.info;
+        e_query= new Ejecuta_query(this.t_usuarios,funcion_i,expquery2.logica2,this,expquery2.logica1);
+        e_query.ejecuta_query();
         return null;
     }
 
@@ -303,7 +305,11 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(Not_rel nrel) {
-        return nrel.in.Acept(this);
+        if((boolean)nrel.logica.Acept(this)==true){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     @Override
@@ -323,6 +329,7 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(Query q) {
+        
         q.exp.Acept(this);
         return null;
     }
@@ -390,7 +397,7 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(L_igual li) {
-        if(li.logica.Acept(this).toString().equals(li.rel.Acept(this).toString())){
+        if(li.rel.Acept(this).toString().equals(li.in.Acept(this).toString())){
             return true;
         }else{
             return false;

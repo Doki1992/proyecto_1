@@ -10,7 +10,7 @@ package Estructura_store;
  *
  * @author twa
  */
-public class Usuario {
+public class Usuario extends Token{
     String id;
     String nombre;
     String apellido;
@@ -18,6 +18,7 @@ public class Usuario {
     String telefono;
     String email;
     String direccion;
+    Tabla_tienda tiendas;
 
     public void setId(String id) {
         this.id = id;
@@ -50,7 +51,7 @@ public class Usuario {
     public void setTiendas(Tabla_tienda tiendas) {
         this.tiendas = tiendas;
     }
-    Tabla_tienda tiendas;
+    
 
     public Usuario(String id, String nombre, String apellido, String password, String telefono, String email, String direccion,Tabla_tienda tiendas) {
         this.id = id;

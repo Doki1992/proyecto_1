@@ -6,6 +6,7 @@
     import java.util.ArrayList;
     import javax.swing.ImageIcon;
     import java.util.Hashtable;
+    import Estructura_store.*;
 
     parser code
     {:
@@ -16,6 +17,7 @@ public Nodo getRaiz(){return raiz;}
     public ArrayList<String> getDatosFigura(){
     return action_obj.gman;
     }
+    public Funcion_info info=new Funcion_info();
     public int tam1, tam2;
     public LinkedList tab = new LinkedList();
   //  static LinkedList<Element> gmansimb = new LinkedList();
@@ -109,7 +111,7 @@ public Nodo getRaiz(){return raiz;}
     dec::= CONS id:a IGUAL CADS:b PUNTOC {:RESULT = new Declara_const(a,b);:}
                 | id:a PARA paramet:b PARC IGUAL LLAVEA expresion:c LLAVEC PUNTOC{:RESULT = new Declara_funcion(a,c,b);:};
      
-    exp::= EXTRAER DE logica:a PUNTOC {:RESULT = new Exp_query1(a);:}| EXTRAER DE logica:a DONDE logica:b PUNTOC{:RESULT = new Exp_query2(a,b);:};            
+    exp::= EXTRAER DE logica:a PUNTOC {:RESULT = new Exp_query1(a,parser.info);:}| EXTRAER DE id:a DONDE logica:b PUNTOC{:RESULT = new Exp_query2(a,b,parser.info);:};            
                 
     cuerpo::= cuerpo:a c:b {:RESULT = new List_cuerpo(a,b);:}| c:b{:RESULT = new Unit_cuerpo(b);:};
     c::= D IU D 
@@ -135,7 +137,7 @@ public Nodo getRaiz(){return raiz;}
               
               | D TIENDA IDE IGUAL llamada D //operaciones sobre productos
                 list6:a
-               D TIENDA MD  {:RESULT = new Operaciones_producto(a);:}
+                D TIENDA MD  {:RESULT = new Operaciones_producto(a);:}
               
               | D GET TIPO IGUAL llamada:a PROP IGUAL llamada:b MD {:RESULT = new Get_tiendas(a,b);:}; 
 
@@ -196,12 +198,12 @@ RESULT.add(a);:};
     logica::= logica:a OR rel:b {:RESULT = new L_or(a,b);:}
             | logica:a XOR rel:b {:RESULT = new L_xor(a,b);:}
             | logica:a AND rel:b {:RESULT = new L_and(a,b);:}
-            | logica:a IGUALIGUAL rel:b{:RESULT = new L_igual(a,b); :}
             | rel:a {:RESULT =new L_rel(a);:};
 
-    rel::=  NOT in:a {:RESULT = new Not_rel(a);:}
+    rel::=  NOT PARA logica:a PARC {:RESULT = new Not_rel(a);:}
             |rel:a MNR in:b {:RESULT = new Menor_rel(a,b);:}
             | rel:a MYR in:b {:RESULT = new Mayor_rel(a,b);:}
+            | rel:a IGUALIGUAL in:b{:RESULT = new L_igual(a,b); :}
             | in:b {:RESULT = new In_rel(b);:};
  
 llamada::= ABREC id:a COMA llam:b CIERRAC {:RESULT = new Llamada_funcion(new Id(a),b);:}//cambio id por llamada
@@ -228,7 +230,13 @@ Id_num::= id:A{:RESULT = A;:}|num:A{:RESULT = A;:};
     | LLAVEA logica:a LLAVEC {:RESULT = new Logica_llave(a);:}
     | MENOS expresion:a {:RESULT = new Factor_menos(a);:}
     | num:a {:RESULT = new Numero(a);:}
-    | id:a {:RESULT = new Id(a);:}
+    | id:a {:RESULT = new Id(a);
+    if(a.equals("NOM")||a.equals("TEL")||a.equals("APE")||a.equals("IDE")||a.equals("EMA")||a.equals("DIR")||a.equals("COD")||a.equals("PRO")||
+        a.equals("CAN")||a.equals("MAR")||a.equals("COL")||a.equals("TAM")||a.equals("SUC"))
+    {
+     parser.info.put(a, new Cons_token(a,""));
+    }
+     :}
     | CADS:a {:RESULT = new Cadena(a);:};
 
 

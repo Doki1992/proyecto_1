@@ -11,10 +11,10 @@ package Arbol;
  * @author twa
  */
 public class Not_rel implements Produccion_rel{
-   Produccion_expresion in;
+   Produccion_logica logica;
 
-    public Not_rel(Produccion_expresion in) {
-        this.in = in;
+    public Not_rel(Produccion_logica logica) {
+        this.logica = logica;
     }
    
     @Override

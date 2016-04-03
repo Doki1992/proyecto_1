@@ -10,13 +10,13 @@ package Arbol;
  *
  * @author twa
  */
-public class L_igual implements Produccion_logica{
+public class L_igual implements Produccion_rel{
     
-    Produccion_logica logica;
+    Produccion_expresion in;
     Produccion_rel rel;
 
-    public L_igual(Produccion_logica logica, Produccion_rel rel) {
-        this.logica = logica;
+    public L_igual(Produccion_rel rel, Produccion_expresion in) {
+        this.in = in;
         this.rel = rel;
     }
     @Override

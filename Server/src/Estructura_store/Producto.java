@@ -10,7 +10,7 @@ package Estructura_store;
  *
  * @author twa
  */
-public class Producto {
+public class Producto extends Token{
     String codigo;
     String nombre;
     String cantidad;

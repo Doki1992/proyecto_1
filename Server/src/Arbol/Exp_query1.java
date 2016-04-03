@@ -6,6 +6,8 @@
 
 package Arbol;
 
+import Estructura_store.Funcion_info;
+
 /**
  *
  * @author twa
@@ -13,6 +15,12 @@ package Arbol;
 public class Exp_query1 implements Produccion_exp{
 
     public Produccion_logica logica;
+    public Funcion_info info;
+
+    public Exp_query1(Produccion_logica logica, Funcion_info info) {
+        this.logica = logica;
+        this.info = info;
+    }
 
     public Exp_query1(Produccion_logica logica) {
         this.logica = logica;
