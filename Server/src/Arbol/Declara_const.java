@@ -12,11 +12,11 @@ package Arbol;
  */
 public class Declara_const implements Produccion_dec{
     public String id;
-    public Produccion_logica logica;
+    public String  valor;
 
-    public Declara_const(String id, Produccion_logica logica) {
+    public Declara_const(String id, String valor) {
         this.id = id;
-        this.logica = logica;
+        this.valor = valor;
     }
     
 

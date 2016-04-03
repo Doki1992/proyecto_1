@@ -23,8 +23,12 @@ public class Traductor implements Visitor{
     Crea_datos_usuario crea_usuario;
     Crea_datos_tienda crea_tienda;
     Crea_datos_producto crea_producto;
-    Hashtable<String, String> claves_tienda = new Hashtable<>();
+    public Hashtable<String, String> claves_tienda = new Hashtable<>();
     public Hashtable<String, String> claves_producto = new Hashtable<>();
+    public Mate_info Tabla_mate=new Mate_info();
+    public Tabla_funciones_mate Tabla_Espacio_mate= new Tabla_funciones_mate();
+    Mate_token mt;
+    Funcion_info funcion_i;
     
     
    
@@ -63,16 +67,14 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(Declara_const dconst) {
-        
-        dconst.logica.Acept(this);
-        return null;
+        Tabla_mate.Insertar(dconst.id, new Cons_token(dconst.id,dconst.valor));
+        return Tabla_mate;
     }
 
     @Override
     public Object vistit(Declara_funcion dfuncion) {
-        dfuncion.expresion.Acept(this);
-        dfuncion.paramet.Acept(this);
-        return null;
+        Tabla_mate.Insertar(dfuncion.id, new Funcion_token(dfuncion.id,dfuncion.expresion,dfuncion.paramet,dfuncion.paramet.size()));
+        return Tabla_mate;
     }
 
     @Override
@@ -138,7 +140,7 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(Id id) {
-    return (String)id.id;//buscar en la tabla de simbolos 
+    return this.funcion_i.get_Cons(id.id).getValor();
     }
 
     @Override
@@ -212,21 +214,41 @@ public class Traductor implements Visitor{
 
     @Override
     public Object vistit(Llam_cons llamcosn) {
-        llamcosn.logica.Acept(this);
-        return null;
+         if(mt.getVariables().containsKey(llamcosn.id.getId())){
+           Cons_token cs = mt.getVariables().get_Cons(llamcosn.id.getId());
+           if(cs!=null){
+               return cs.getValor().toString();
+           }else{
+               mensaje = new String ("La constante con id "+llamcosn+" no existe");Log.add(mensaje);
+           }
+        }
+        return "null";
     }
 
     @Override
     public Object vistit(Llam_fuc llamfunc) {
-        llamfunc.id.Acept(this);
-        llamfunc.paramet.Acept(this);
-        return null;
+        if(mt.getVariables().containsKey(llamfunc.id.getId())){
+            Funcion_token ft = mt.getVariables().get_Funcion(llamfunc.id.id);
+            this.funcion_i = ft.getParat();
+            if(ft!=null){
+             Ejecuta_llamada ell= new Ejecuta_llamada(llamfunc.paramet,llamfunc.paramet.size(),ft,this);
+             ell.asigna_valores(ft.getParametros());
+             return ell.ejecuta_llamada();
+            }else{
+                mensaje=new String("La funcion con id "+llamfunc.id.id+" no existe"); Log.add(mensaje);
+            }
+        }
+       return null;
     }
 
     @Override
     public Object vistit(Llamada_funcion llamadafuncion) {
-        llamadafuncion.llam.Acept(this);
-        llamadafuncion.logica.Acept(this);
+        mt= Tabla_Espacio_mate.get_Mate("\""+llamadafuncion.id.getId()+"\"");
+        if(mt!=null){
+        return llamadafuncion.llam.Acept(this);    
+        }else{
+           mensaje=new String ("El espacio Mate con nombre "+llamadafuncion.id.id+" no existe");Log.add(mensaje);
+        }
         return null;
     }
 
@@ -244,7 +266,8 @@ public class Traductor implements Visitor{
     @Override
     public Object vistit(Mate mate) {
         mate.declara.Acept(this);
-        mate.logica.Acept(this);
+        Tabla_Espacio_mate.Insertar(mate.id,new Mate_token(Tabla_mate, mate.id));
+        Tabla_mate = new Mate_info();
         return null;
     }
 
@@ -359,6 +382,5 @@ public class Traductor implements Visitor{
     }
     }else{mensaje = new String("La tienda con codigo ya existe");this.Log.add(mensaje);}
     return rt.list2;        
-    }
-    
+    } 
 }

@@ -13,11 +13,11 @@ package Arbol;
 public class Mate implements Produccion_pro{
     
     Produccion_declara declara;
-    Produccion_logica logica;
+    String id;
 
-    public Mate(Produccion_declara declara, Produccion_logica logica) {
+    public Mate(Produccion_declara declara, String id) {
         this.declara = declara;
-        this.logica = logica;
+        this.id = id;
     }
 
     @Override

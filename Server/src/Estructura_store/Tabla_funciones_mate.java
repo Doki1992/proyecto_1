@@ -12,7 +12,7 @@ import java.util.Hashtable;
  *
  * @author twa
  */
-public class Mate_info extends Hashtable<String, Token> {
+public class Tabla_funciones_mate extends Hashtable<String, Token>{
     String mensaje;
 
     public String getMensaje(){
@@ -23,20 +23,13 @@ public class Mate_info extends Hashtable<String, Token> {
         if(!this.containsKey(clave)){
             this.put(clave, token);
         }else{
-            mensaje = new String ("La variable o metodo con id "+clave+" ya existe");
+            mensaje = new String ("El espacio mate con nombre "+clave+" ya existe");
         }
     }
     
-    public Funcion_token get_Funcion(String clave){
-        if(this.containsKey(clave)){
-            return (Funcion_token)this.get(clave);
-        }
-        return null;
-    }
-    
-    public Cons_token get_Cons(String clave){
-        if(this.containsKey(clave)){
-            return (Cons_token)this.get(clave);
+    public Mate_token get_Mate(String clave){
+        if (this.containsKey(clave)){
+            return (Mate_token)this.get(clave);
         }
         return null;
     }

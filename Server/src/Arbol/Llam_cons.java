@@ -11,10 +11,10 @@ package Arbol;
  * @author twa
  */
 public class Llam_cons implements Produccion_llam{
-    Produccion_logica logica;
+    Id id;
 
-    public Llam_cons(Produccion_logica logica) {
-        this.logica = logica;
+    public Llam_cons(Id id) {
+        this.id = id;
     }
 
     

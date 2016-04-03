@@ -11,11 +11,11 @@ package Arbol;
  * @author twa
  */
 public class Llamada_funcion implements Produccion_llamada{
-    Produccion_logica logica;
+    Id id;// identificador del espacio mate.
     Produccion_llam llam;
 
-    public Llamada_funcion(Produccion_logica logica, Produccion_llam llam) {
-        this.logica = logica;
+    public Llamada_funcion(Id id, Produccion_llam llam) {
+        this.id = id;
         this.llam = llam;
     }
     

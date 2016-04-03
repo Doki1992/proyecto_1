@@ -18,6 +18,11 @@ public class Funcion_token extends Token{
     Produccion_expresion expresion;
     LinkedList<String> parametros;
     int numero_parametros;
+    Funcion_info parat=new Funcion_info();
+
+    public Funcion_info getParat() {
+        return parat;
+    }
 
     public String getId() {
         return id;
@@ -57,4 +62,6 @@ public class Funcion_token extends Token{
         this.parametros = parametros;
         this.numero_parametros = numero_parametros;
     }
+    
+ 
 }

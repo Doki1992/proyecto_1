@@ -79,6 +79,7 @@ public Nodo getRaiz(){return raiz;}
     non terminal Produccion_pro pro;
     non terminal Produccion_exp exp;
     non terminal Nodo raiz;
+    non terminal String  Id_num;
 
     precedence left MAS, MD;
     precedence left POR, DIV;
@@ -91,7 +92,7 @@ public Nodo getRaiz(){return raiz;}
 //NIVEL 1
     raiz::= programa:a{:RESULT =a;parser.raiz=RESULT;:};
     programa::=  programa:a pro:b {:RESULT = new List_programa(b,a);:}| pro:a {:RESULT = new Unit_programa(a);:};
-    pro::=     D MATE NOM IGUAL logica:a D 
+    pro::=     D MATE NOM IGUAL CADS:a D 
                 declara:b
                D MATE MD{:RESULT = new Mate(b,a);:}
 
@@ -104,7 +105,7 @@ public Nodo getRaiz(){return raiz;}
                  D QUERY MD {:RESULT = new Query(a);:};
                 
     declara::= declara:a dec:b {:RESULT = new List_declara(a,b);:}| dec:a{:RESULT = new Unit_declara(a);:};
-    dec::= CONS id:a IGUAL logica:b PUNTOC {:RESULT = new Declara_const(a,b);:}
+    dec::= CONS id:a IGUAL CADS:b PUNTOC {:RESULT = new Declara_const(a,b);:}
                 | id:a PARA paramet:b PARC IGUAL LLAVEA expresion:c LLAVEC PUNTOC{:RESULT = new Declara_funcion(a,c,b);:};
      
     exp::= EXTRAER DE logica:a PUNTOC {:RESULT = new Exp_query1(a);:}| EXTRAER DE logica:a DONDE logica:b PUNTOC{:RESULT = new Exp_query2(a,b);:};            
@@ -201,12 +202,12 @@ RESULT.add(a);:};
             | rel:a MYR in:b {:RESULT = new Mayor_rel(a,b);:}
             | in:b {:RESULT = new In_rel(b);:};
  
-llamada::= ABREC logica:a COMA llam:b CIERRAC {:RESULT = new Llamada_funcion(a,b);:}
-            | logica:a {:RESULT = new Llamada_logica(a);:};
-llam::= id:a PARA paramet:b PARC {:RESULT = new Llam_fuc(new Id(a),b);:}
-            | logica:a {:RESULT = new Llam_cons(a);:};
-paramet::= paramet:a COMA id:b {:RESULT =a; a.add(b);:} | id:a {:RESULT = new LinkedList<>(); RESULT.add(a);:};
-
+llamada::= ABREC id:a COMA llam:b CIERRAC {:RESULT = new Llamada_funcion(new Id(a),b);:}//cambio id por llamada
+            | logica:a {:RESULT = new Llamada_logica(a);:};//estas son mamadas
+llam::= id:a PARA paramet:b PARC {:RESULT = new Llam_fuc(new Id(a),b);:}//llamada a funcion 
+            | id:a {:RESULT = new Llam_cons(new Id(a));:};//llamada a constante 
+paramet::= paramet:a COMA Id_num:b {:RESULT =a; a.add(b);:} | Id_num:a {:RESULT = new LinkedList<>(); RESULT.add(a);:};
+Id_num::= id:A{:RESULT = A;:}|num:A{:RESULT = A;:};
 //NIVEL 4 -  EXPRESIONES Y FACTORES  
  
     in::= expresion:a {:RESULT = a;:};

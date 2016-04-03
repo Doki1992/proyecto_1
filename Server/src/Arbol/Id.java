@@ -16,6 +16,10 @@ public class Id implements Produccion_factor{
     public Id(String id) {
         this.id = id;
     }
+
+    public String getId() {
+        return id;
+    }
     
 
     @Override

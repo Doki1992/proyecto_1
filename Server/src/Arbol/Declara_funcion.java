@@ -6,6 +6,8 @@
 
 package Arbol;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author twa
@@ -13,9 +15,9 @@ package Arbol;
 public class Declara_funcion implements Produccion_dec{
     public String id;
     public Produccion_expresion expresion;
-    public Produccion_paramet paramet;
+    public LinkedList<String> paramet;
 
-    public Declara_funcion(String id, Produccion_expresion expresion, Produccion_paramet paramet) {
+    public Declara_funcion(String id, Produccion_expresion expresion, LinkedList<String> paramet) {
         this.id = id;
         this.expresion = expresion;
         this.paramet = paramet;
